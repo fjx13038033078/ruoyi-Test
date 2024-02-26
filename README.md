@@ -21,6 +21,7 @@
 18. 连接池监视：监视当前系统数据库连接池状态，可进行分析SQL找出系统性能瓶颈。
 
 ## 部署与启动
-1. 前端首次启动进入ruoyi-ui目录后，执行npm install即可
-2. 如果node版本高于16，在idea终端打开进入ruoyi-ui目录后，执行 $env:NODE_OPTIONS="--openssl-legacy-provider" 后再执行npm run dev
+1. npm install前需要换源，执行npm config set registry https://registry.npmmirror.com
+2. 前端首次启动进入ruoyi-ui目录后，执行npm install即可
+3. 如果node版本高于16，在idea终端打开进入ruoyi-ui目录后，执行 $env:NODE_OPTIONS="--openssl-legacy-provider" 后再执行npm run dev
 
