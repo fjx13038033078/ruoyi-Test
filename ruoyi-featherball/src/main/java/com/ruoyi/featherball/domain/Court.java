@@ -47,7 +47,7 @@ public class Court implements Serializable {
     /**
      * 场地状态（可预约，不可预约）
      */
-    private Integer courtStatus;
+    private CourtType courtStatus;
 
     /**
      * 场地费用

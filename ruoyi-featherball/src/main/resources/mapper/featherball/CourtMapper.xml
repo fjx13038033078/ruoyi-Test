@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.featherball.mapper.CourtMapper">
+
+    <resultMap type="Court" id="CourtResultMap">
+        <id property="courtId" column="court_id"/>
+        <result property="venueId" column="venue_id"/>
+        <result property="courtType" column="court_type"/>
+        <result property="courtNumber" column="court_number"/>
+        <result property="courtStatus" column="court_status"/>
+        <result property="courtFee" column="court_fee"/>
+    </resultMap>
+
+    <!-- 获取所有场地 -->
+    <select id="getAllCourts" resultMap="CourtResultMap">
+        SELECT * FROM cfcr_court
+    </select>
+
+    <!-- 根据场地ID获取场地信息 -->
+    <select id="getCourtById" parameterType="long" resultMap="CourtResultMap">
+        SELECT * FROM cfcr_court WHERE court_id = #{courtId}
+    </select>
+
+    <!-- 添加场地 -->
+    <insert id="addCourt" parameterType="Court">
+        INSERT INTO cfcr_court (venue_id, court_type, court_number, court_status, court_fee)
+        VALUES (#{venueId}, #{courtType}, #{courtNumber}, #{courtStatus}, #{courtFee})
+    </insert>
+
+    <!-- 更新场地信息 -->
+    <update id="updateCourt" parameterType="Court">
+        UPDATE cfcr_court SET venue_id = #{venueId}, court_type = #{courtType},
+                              court_number = #{courtNumber}, court_status = #{courtStatus},
+                              court_fee = #{courtFee}
+        WHERE court_id = #{courtId}
+    </update>
+
+    <!-- 删除场地 -->
+    <delete id="deleteCourt" parameterType="Long">
+        DELETE FROM cfcr_court WHERE court_id = #{courtId}
+    </delete>
+
+</mapper>
+

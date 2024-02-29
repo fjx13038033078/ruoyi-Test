@@ -11,6 +11,7 @@ package com.ruoyi.featherball.domain;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.ruoyi.common.enums.ReservationStatusEnum;
 import lombok.*;
 
 import java.io.Serializable;
@@ -46,7 +47,7 @@ public class Reservation implements Serializable {
     /**
      * 预约状态，0预约，1取消
      */
-    private Integer reservationStatus;
+    private ReservationStatusEnum reservationStatus;
 
     private static final long serialVersionUID = 1L;
 }
