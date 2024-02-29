@@ -1,4 +1,6 @@
 
+# CFCR（Court Booking for Featherball Courts的缩写）
+
 ## 内置功能
 
 1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
