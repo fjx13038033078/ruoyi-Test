@@ -10,6 +10,8 @@
         <result property="venueAddress" column="venue_address"/>
         <result property="venueContact" column="venue_contact"/>
         <result property="venueDescription" column="venue_description"/>
+        <result property="isShower" column="is_shower"/>
+        <result property="isOutdoor" column="is_outdoor"/>
     </resultMap>
 
     <!-- 获取所有场馆 -->
@@ -24,14 +26,15 @@
 
     <!-- 添加场馆 -->
     <insert id="addVenue" parameterType="Venue">
-        INSERT INTO cfcr_venue (venue_name, venue_address, venue_contact, venue_description)
-        VALUES (#{venueName}, #{venueAddress}, #{venueContact}, #{venueDescription})
+        INSERT INTO cfcr_venue (venue_name, venue_address, venue_contact, venue_description, is_shower, is_outdoor)
+        VALUES (#{venueName}, #{venueAddress}, #{venueContact}, #{venueDescription}, #{isShower}, #{isOutdoor})
     </insert>
 
     <!-- 更新场馆信息 -->
     <update id="updateVenue" parameterType="Venue">
         UPDATE cfcr_venue SET venue_name = #{venueName}, venue_address = #{venueAddress},
-                              venue_contact = #{venueContact}, venue_description = #{venueDescription}
+                              venue_contact = #{venueContact}, venue_description = #{venueDescription},
+                              is_shower = #{isShower}, is_outdoor = #{isOutdoor}
         WHERE venue_id = #{venueId}
     </update>
 

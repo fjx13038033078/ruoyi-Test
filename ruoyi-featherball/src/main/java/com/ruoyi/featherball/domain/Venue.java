@@ -13,6 +13,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.ruoyi.common.enums.VenueFacilityEnum;
+import com.ruoyi.common.enums.VenueType;
 import lombok.*;
 
 import java.io.Serializable;
@@ -47,6 +49,16 @@ public class Venue implements Serializable {
      * 场馆描述
      */
     private String venueDescription;
+
+    /**
+     * 是否有淋浴设施，0表示无，1表示有
+     */
+    private VenueFacilityEnum isShower;
+
+    /**
+     * 是否为户外场馆，0表示否，1表示是
+     */
+    private VenueType isOutdoor;
 
     private static final long serialVersionUID = 1L;
 }
