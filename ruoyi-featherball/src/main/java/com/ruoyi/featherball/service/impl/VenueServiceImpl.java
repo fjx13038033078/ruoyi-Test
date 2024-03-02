@@ -1,5 +1,7 @@
 package com.ruoyi.featherball.service.impl;
 
+import com.ruoyi.common.enums.VenueFacilityEnum;
+import com.ruoyi.common.enums.VenueType;
 import com.ruoyi.featherball.domain.Venue;
 import com.ruoyi.featherball.mapper.VenueMapper;
 import com.ruoyi.featherball.service.VenueService;

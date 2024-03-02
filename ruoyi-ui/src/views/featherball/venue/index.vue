@@ -16,6 +16,16 @@
           <el-table-column label="场馆名称" prop="venueName" align="center"></el-table-column>
           <el-table-column label="场馆地址" prop="venueAddress" align="center"></el-table-column>
           <el-table-column label="场馆联系方式" prop="venueContact" align="center"></el-table-column>
+          <el-table-column label="淋浴设施" prop="isShower" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.isShower === 1 ? '有' : '无' }}
+            </template>
+          </el-table-column>
+          <el-table-column label="是否户外场馆" prop="isOutdoor" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.isOutdoor === 1 ? '是' : '否' }}
+            </template>
+          </el-table-column>
           <el-table-column label="操作" align="center" width="230px">
             <template slot-scope="scope">
               <el-button type="success" size="mini" @click="handleView(scope.row)">查看</el-button>
@@ -39,10 +49,10 @@
           <!-- 对话框内容 -->
           <div>
             <el-form :model="venueForm" label-width="100px">
-              <!-- 场馆ID -->
-              <el-form-item label="场馆ID">
-                <el-input v-model="venueForm.venueId" disabled></el-input>
-              </el-form-item>
+<!--              &lt;!&ndash; 场馆ID &ndash;&gt;-->
+<!--              <el-form-item label="场馆ID">-->
+<!--                <el-input v-model="venueForm.venueId" disabled></el-input>-->
+<!--              </el-form-item>-->
               <!-- 场馆名称 -->
               <el-form-item label="场馆名称">
                 <el-input v-model="venueForm.venueName" :disabled="isReadOnly"></el-input>
@@ -54,6 +64,20 @@
               <!-- 场馆联系方式 -->
               <el-form-item label="场馆联系方式">
                 <el-input v-model="venueForm.venueContact" :disabled="isReadOnly"></el-input>
+              </el-form-item>
+              <!-- 是否有淋浴设施 -->
+              <el-form-item label="有无淋浴设施">
+                <el-select v-model="venueForm.isShower" :disabled="isReadOnly">
+                  <el-option label="有" :value="1"></el-option>
+                  <el-option label="无" :value="0"></el-option>
+                </el-select>
+              </el-form-item>
+              <!-- 是否户外场馆 -->
+              <el-form-item label="是否户外场馆">
+                <el-select v-model="venueForm.isOutdoor" :disabled="isReadOnly">
+                  <el-option label="是" :value="1"></el-option>
+                  <el-option label="否" :value="0"></el-option>
+                </el-select>
               </el-form-item>
             </el-form>
           </div>
@@ -87,7 +111,9 @@ export default {
       venueForm: { // 新增场馆表单
         venueName: '',
         venueAddress: '',
-        venueContact: ''
+        venueContact: '',
+        isShower: 0, // 默认无淋浴设施
+        isOutdoor: 0 // 默认不是户外场馆
       },
       isReadOnly: false, // 是否只读模式
       // 查询参数
@@ -116,7 +142,9 @@ export default {
       this.venueForm = {
         venueName: '',
         venueAddress: '',
-        venueContact: ''
+        venueContact: '',
+        isShower: 0,
+        isOutdoor: 0
       }
     },
     // 添加场馆
@@ -133,6 +161,9 @@ export default {
         this.$message.error('场馆名称不能为空')
         return
       }
+      // 将布尔值转换为整数值
+      this.venueForm.isShower = this.venueForm.isShower ? 1 : 0;
+      this.venueForm.isOutdoor = this.venueForm.isOutdoor ? 1 : 0;
       addVenue(this.venueForm).then(response => {
         // 处理添加场馆成功的情况
         // 添加成功后重新获取场馆列表
@@ -217,4 +248,3 @@ export default {
   }
 }
 </script>
-

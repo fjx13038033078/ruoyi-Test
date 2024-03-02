@@ -53,12 +53,12 @@ public class Venue implements Serializable {
     /**
      * 是否有淋浴设施，0表示无，1表示有
      */
-    private VenueFacilityEnum isShower;
+    private Integer isShower;
 
     /**
      * 是否为户外场馆，0表示否，1表示是
      */
-    private VenueType isOutdoor;
+    private Integer isOutdoor;
 
     private static final long serialVersionUID = 1L;
 }
