@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.featherball;
 
 import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.featherball.domain.Court;
 import com.ruoyi.featherball.service.CourtService;
 import lombok.RequiredArgsConstructor;
@@ -23,8 +24,10 @@ public class CourtController extends BaseController {
 
     // 获取所有场地列表
     @GetMapping("/listAll")
-    public List<Court> listAllCourts() {
-        return courtService.getAllCourts();
+    public TableDataInfo listAllCourts() {
+        startPage();
+        List<Court> allCourts = courtService.getAllCourts();
+        return getDataTable(allCourts);
     }
 
     // 根据场地ID获取场地信息

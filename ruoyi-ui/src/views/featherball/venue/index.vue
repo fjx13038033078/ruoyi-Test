@@ -79,6 +79,10 @@
                   <el-option label="否" :value="0"></el-option>
                 </el-select>
               </el-form-item>
+              <!-- 场馆描述 -->
+              <el-form-item label="场馆描述">
+                <el-input v-model="venueForm.venueDescription" :disabled="isReadOnly"  type="textarea" autosize></el-input>
+              </el-form-item>
             </el-form>
           </div>
           <!-- 对话框按钮 -->
@@ -113,7 +117,8 @@ export default {
         venueAddress: '',
         venueContact: '',
         isShower: 0, // 默认无淋浴设施
-        isOutdoor: 0 // 默认不是户外场馆
+        isOutdoor: 0, // 默认不是户外场馆
+        venueDescription:''
       },
       isReadOnly: false, // 是否只读模式
       // 查询参数
@@ -144,7 +149,8 @@ export default {
         venueAddress: '',
         venueContact: '',
         isShower: 0,
-        isOutdoor: 0
+        isOutdoor: 0,
+        venueDescription:''
       }
     },
     // 添加场馆
@@ -234,10 +240,8 @@ export default {
       this.isReadOnly = true // 设置为只读模式
       // 调用后端接口获取场馆详细信息
       getVenue(row.venueId).then(response => {
-        console.log(response)
         this.venueForm = response // 填充表单数据
         this.dialogVisible = true // 打开对话框
-        console.log(this.dialogVisible)
       })
     },
     // 关闭对话框

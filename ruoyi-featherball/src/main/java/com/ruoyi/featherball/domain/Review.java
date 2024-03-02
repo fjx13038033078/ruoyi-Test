@@ -9,8 +9,10 @@ package com.ruoyi.featherball.domain;
  */
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import java.io.Serializable;
@@ -34,6 +36,12 @@ public class Review implements Serializable {
     private Long userId;
 
     /**
+     * 用户姓名
+     */
+    @TableField(exist = false)
+    private String userName;
+
+    /**
      * 场地ID
      */
     private Long courtId;
@@ -46,8 +54,10 @@ public class Review implements Serializable {
     /**
      * 评论时间
      */
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private LocalDateTime reviewTime;
 
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }
 

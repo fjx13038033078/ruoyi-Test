@@ -7,7 +7,6 @@
     <resultMap type="Court" id="CourtResultMap">
         <id property="courtId" column="court_id"/>
         <result property="venueId" column="venue_id"/>
-        <result property="courtType" column="court_type"/>
         <result property="courtNumber" column="court_number"/>
         <result property="courtStatus" column="court_status"/>
         <result property="courtFee" column="court_fee"/>
@@ -25,14 +24,13 @@
 
     <!-- 添加场地 -->
     <insert id="addCourt" parameterType="Court">
-        INSERT INTO cfcr_court (venue_id, court_type, court_number, court_status, court_fee)
-        VALUES (#{venueId}, #{courtType}, #{courtNumber}, #{courtStatus}, #{courtFee})
+        INSERT INTO cfcr_court (venue_id, court_number, court_status, court_fee)
+        VALUES (#{venueId}, #{courtNumber}, #{courtStatus}, #{courtFee})
     </insert>
 
     <!-- 更新场地信息 -->
     <update id="updateCourt" parameterType="Court">
-        UPDATE cfcr_court SET venue_id = #{venueId}, court_type = #{courtType},
-                              court_number = #{courtNumber}, court_status = #{courtStatus},
+        UPDATE cfcr_court SET venue_id = #{venueId}, court_number = #{courtNumber}, court_status = #{courtStatus},
                               court_fee = #{courtFee}
         WHERE court_id = #{courtId}
     </update>
@@ -41,6 +39,11 @@
     <delete id="deleteCourt" parameterType="Long">
         DELETE FROM cfcr_court WHERE court_id = #{courtId}
     </delete>
+
+    <select id="countByCourtNumber" resultType="int">
+        SELECT COUNT(*) FROM cfcr_court WHERE venue_id = #{venueId} and court_number = #{courtNumber}
+    </select>
+
 
 </mapper>
 

@@ -9,6 +9,7 @@ package com.ruoyi.featherball.domain;
  */
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.enums.CourtType;
@@ -35,9 +36,10 @@ public class Court implements Serializable {
     private Long venueId;
 
     /**
-     * 场地类型（室内，室外）
+     * 场馆名
      */
-    private Integer courtType;
+    @TableField(exist = false)
+    private String venueName;
 
     /**
      * 场地编号
@@ -45,15 +47,16 @@ public class Court implements Serializable {
     private Integer courtNumber;
 
     /**
-     * 场地状态（可预约，不可预约）
+     * 场地状态（0可预约，1不可预约）
      */
-    private CourtType courtStatus;
+    private Integer courtStatus;
 
     /**
      * 场地费用
      */
     private BigDecimal courtFee;
 
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }
 

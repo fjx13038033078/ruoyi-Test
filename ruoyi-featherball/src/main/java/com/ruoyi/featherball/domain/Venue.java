@@ -60,6 +60,7 @@ public class Venue implements Serializable {
      */
     private Integer isOutdoor;
 
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }
 

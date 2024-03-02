@@ -9,6 +9,7 @@ package com.ruoyi.featherball.domain;
  */
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.enums.ReservationStatusEnum;
@@ -49,5 +50,6 @@ public class Reservation implements Serializable {
      */
     private ReservationStatusEnum reservationStatus;
 
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

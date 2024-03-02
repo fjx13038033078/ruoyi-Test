@@ -2,6 +2,7 @@ package com.ruoyi.featherball.service.impl;
 
 import com.ruoyi.featherball.domain.Court;
 import com.ruoyi.featherball.mapper.CourtMapper;
+import com.ruoyi.featherball.mapper.VenueMapper;
 import com.ruoyi.featherball.service.CourtService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,13 +24,22 @@ public class CourtServiceImpl implements CourtService {
 
     private final CourtMapper courtMapper;
 
+    private final VenueMapper venueMapper;
+
     /**
      * 获取所有场地
      * @return 所有场地列表
      */
     @Override
     public List<Court> getAllCourts() {
-        return courtMapper.getAllCourts();
+        List<Court> allCourts = courtMapper.getAllCourts();
+        for (Court court : allCourts){
+            // 根据 court 中的 venueId 查询对应的场馆名称
+            String venueName = venueMapper.getVenueById(court.getVenueId()).getVenueName();
+            // 将场馆名称设置到 Court 对象中
+            court.setVenueName(venueName);
+        }
+        return allCourts;
     }
 
     /**
@@ -49,6 +59,7 @@ public class CourtServiceImpl implements CourtService {
      */
     @Override
     public boolean addCourt(Court court) {
+        countByCourtNumber(court);
         int rows = courtMapper.addCourt(court);
         return rows > 0;
     }
@@ -60,6 +71,7 @@ public class CourtServiceImpl implements CourtService {
      */
     @Override
     public boolean updateCourt(Court court) {
+        countByCourtNumber(court);
         int rows = courtMapper.updateCourt(court);
         return rows > 0;
     }
@@ -73,5 +85,17 @@ public class CourtServiceImpl implements CourtService {
     public boolean deleteCourt(Long courtId) {
         int rows = courtMapper.deleteCourt(courtId);
         return rows > 0;
+    }
+
+    /**
+     * 判断该场馆中该场地是否已存在
+     *
+     * @param court
+     */
+    private void countByCourtNumber(Court court){
+        if (courtMapper.countByCourtNumber(court.getVenueId(), court.getCourtNumber()) > 0) {
+            // 如果场地编号已存在，则抛出异常
+            throw new RuntimeException("该场地编号已存在");
+        }
     }
 }

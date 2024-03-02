@@ -10,6 +10,7 @@ package com.ruoyi.featherball.mapper;
 
 import com.ruoyi.featherball.domain.Court;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -25,4 +26,13 @@ public interface CourtMapper {
     int updateCourt(Court court);
 
     int deleteCourt(Long courtId);
+
+    /**
+     * 根据场地编号查询数量
+     *
+     * @param courtNumber 场地编号
+     * @return 场地编号数量
+     */
+    int countByCourtNumber(@Param("venueId")Long venueId, @Param("courtNumber") Integer courtNumber);
+
 }
