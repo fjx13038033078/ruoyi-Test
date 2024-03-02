@@ -20,6 +20,11 @@
               {{ scope.row.courtStatus === 0 ? '可预约' : '不可预约' }}
             </template>
           </el-table-column>
+          <el-table-column label="是否VIP场地" prop="courtVip" align="center">
+            <template slot-scope="scope">
+              {{ scope.row.courtVip === 0 ? '否' : '是' }}
+            </template>
+          </el-table-column>
           <el-table-column label="场地费用" prop="courtFee" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="230px">
             <template slot-scope="scope">
@@ -62,10 +67,17 @@
               <!-- 场地状态 -->
               <el-form-item label="场地状态">
                 <el-radio-group v-model="courtForm.courtStatus" :disabled="isReadOnly">
-                  <el-radio :label="0">可预约</el-radio>
-                  <el-radio :label="1">不可预约</el-radio>
+                  <el-radio :label="0">不可预约</el-radio>
+                  <el-radio :label="1">可预约</el-radio>
                 </el-radio-group>
               </el-form-item>
+                <!-- 是否为VIP场地 -->
+                <el-form-item label="是否VIP场地">
+                  <el-select v-model="courtForm.courtVip" :disabled="isReadOnly">
+                    <el-option label="是" :value="1"></el-option>
+                    <el-option label="否" :value="0"></el-option>
+                  </el-select>
+                </el-form-item>
               <!-- 场地费用 -->
               <el-form-item label="场地费用">
                 <el-input v-model="courtForm.courtFee" :disabled="isReadOnly"></el-input>
@@ -105,7 +117,8 @@ export default {
         venueName: '',
         courtNumber: '',
         courtStatus: 0, // 默认可预约
-        courtFee: ''
+        courtFee: '',
+        courtVip: '0'//默认不是VIP场地
       },
       isReadOnly: false, // 是否只读模式
       // 查询参数
@@ -235,7 +248,7 @@ export default {
       this.isReadOnly = true // 设置为只读模式
       // 调用后端接口获取场地详细信息
       getCourt(row.courtId).then(response => {
-        this.courtForm = response // 填充表单数据
+        this.courtForm = response.data // 填充表单数据
         this.dialogVisible = true // 打开对话框
       })
     },

@@ -56,6 +56,11 @@ public class Court implements Serializable {
      */
     private BigDecimal courtFee;
 
+    /**
+     * 是否为VIP场地（0否，1是）
+     */
+    private Integer courtVip;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

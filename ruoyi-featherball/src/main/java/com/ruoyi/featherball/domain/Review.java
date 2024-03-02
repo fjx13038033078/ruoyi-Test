@@ -44,7 +44,7 @@ public class Review implements Serializable {
     /**
      * 场地ID
      */
-    private Long courtId;
+    private Long venueId;
 
     /**
      * 评论内容

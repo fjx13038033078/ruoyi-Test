@@ -10,6 +10,7 @@
         <result property="courtNumber" column="court_number"/>
         <result property="courtStatus" column="court_status"/>
         <result property="courtFee" column="court_fee"/>
+        <result property="courtVip" column="court_vip"/>
     </resultMap>
 
     <!-- 获取所有场地 -->
@@ -24,14 +25,14 @@
 
     <!-- 添加场地 -->
     <insert id="addCourt" parameterType="Court">
-        INSERT INTO cfcr_court (venue_id, court_number, court_status, court_fee)
-        VALUES (#{venueId}, #{courtNumber}, #{courtStatus}, #{courtFee})
+        INSERT INTO cfcr_court (venue_id, court_number, court_status, court_fee, court_vip)
+        VALUES (#{venueId}, #{courtNumber}, #{courtStatus}, #{courtFee}, #{courtVip})
     </insert>
 
     <!-- 更新场地信息 -->
     <update id="updateCourt" parameterType="Court">
         UPDATE cfcr_court SET venue_id = #{venueId}, court_number = #{courtNumber}, court_status = #{courtStatus},
-                              court_fee = #{courtFee}
+                              court_fee = #{courtFee}, court_vip = #{courtVip}
         WHERE court_id = #{courtId}
     </update>
 

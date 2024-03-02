@@ -1,6 +1,7 @@
 package com.ruoyi.web.controller.featherball;
 
 import com.ruoyi.common.core.controller.BaseController;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.featherball.domain.Venue;
 import com.ruoyi.featherball.service.VenueService;
@@ -31,25 +32,25 @@ public class VenueController extends BaseController {
 
     // 根据场馆ID获取场馆信息
     @GetMapping("/detail")
-    public Venue getVenueById(@RequestParam Long venueId) {
-        return venueService.getVenueById(venueId);
+    public AjaxResult getVenueById(@RequestParam Long venueId) {
+        return success(venueService.getVenueById(venueId));
     }
 
     // 添加场馆
     @PostMapping("/add")
-    public boolean addVenue(@RequestBody Venue venue) {
-        return venueService.addVenue(venue);
+    public AjaxResult addVenue(@RequestBody Venue venue) {
+        return toAjax(venueService.addVenue(venue));
     }
 
     // 更新场馆信息
     @PostMapping("/update")
-    public boolean updateVenue(@RequestBody Venue venue) {
-        return venueService.updateVenue(venue);
+    public AjaxResult updateVenue(@RequestBody Venue venue) {
+        return toAjax(venueService.updateVenue(venue));
     }
 
     // 删除场馆
     @GetMapping("/delete")
-    public boolean deleteVenue(@RequestParam Long venueId) {
-        return venueService.deleteVenue(venueId);
+    public AjaxResult deleteVenue(@RequestParam Long venueId) {
+        return toAjax(venueService.deleteVenue(venueId));
     }
 }

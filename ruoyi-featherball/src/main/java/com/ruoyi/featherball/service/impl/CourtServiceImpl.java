@@ -71,6 +71,12 @@ public class CourtServiceImpl implements CourtService {
      */
     @Override
     public boolean updateCourt(Court court) {
+        if (!isCourtNumberChanged(court)) {
+            // 如果场地编号没有变化，则直接执行更新操作，不需要进行重复检查
+            int rows = courtMapper.updateCourt(court);
+            return rows > 0;
+        }
+
         countByCourtNumber(court);
         int rows = courtMapper.updateCourt(court);
         return rows > 0;
@@ -97,5 +103,17 @@ public class CourtServiceImpl implements CourtService {
             // 如果场地编号已存在，则抛出异常
             throw new RuntimeException("该场地编号已存在");
         }
+    }
+
+    /**
+     * 判断场地编号是否有变化
+     * @param court 待更新的场地信息
+     * @return true 如果场地编号有变化，否则返回 false
+     */
+    private boolean isCourtNumberChanged(Court court) {
+        // 查询数据库中的场地信息
+        Court existingCourt = courtMapper.getCourtById(court.getCourtId());
+        // 比较数据库中的场地编号和更新后的场地编号是否相同
+        return !existingCourt.getCourtNumber().equals(court.getCourtNumber());
     }
 }
