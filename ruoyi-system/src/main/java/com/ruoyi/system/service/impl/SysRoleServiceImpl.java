@@ -422,4 +422,14 @@ public class SysRoleServiceImpl implements ISysRoleService
         }
         return userRoleMapper.batchUserRole(list);
     }
+
+    /**
+     * 用户仅有一个角色时获取用户角色key
+     *
+     * @param userId
+     * @return
+     */
+    public String selectStringRoleByUserId(Long userId){
+        return (String) selectRolePermissionByUserId(userId).toArray()[0];
+    }
 }
