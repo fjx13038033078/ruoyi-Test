@@ -17,7 +17,7 @@
           <el-table-column label="场地编号" prop="courtNumber" align="center"></el-table-column>
           <el-table-column label="场地状态" prop="courtStatus" align="center">
             <template slot-scope="scope">
-              {{ scope.row.courtStatus === 0 ? '可预约' : '不可预约' }}
+              {{ scope.row.courtStatus === 0 ? '不可预约' : '可预约' }}
             </template>
           </el-table-column>
           <el-table-column label="是否VIP场地" prop="courtVip" align="center">
@@ -26,8 +26,9 @@
             </template>
           </el-table-column>
           <el-table-column label="场地费用" prop="courtFee" align="center"></el-table-column>
-          <el-table-column label="操作" align="center" width="230px">
+          <el-table-column label="操作" align="center" width="280px">
             <template slot-scope="scope">
+              <el-button type="info" size="mini" @click="handleReservation(scope.row)">预约</el-button>
               <el-button type="success" size="mini" @click="handleView(scope.row)">查看</el-button>
               <el-button type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
               <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
@@ -71,13 +72,13 @@
                   <el-radio :label="1">可预约</el-radio>
                 </el-radio-group>
               </el-form-item>
-                <!-- 是否为VIP场地 -->
-                <el-form-item label="是否VIP场地">
-                  <el-select v-model="courtForm.courtVip" :disabled="isReadOnly">
-                    <el-option label="是" :value="1"></el-option>
-                    <el-option label="否" :value="0"></el-option>
-                  </el-select>
-                </el-form-item>
+              <!-- 是否为VIP场地 -->
+              <el-form-item label="是否VIP场地">
+                <el-select v-model="courtForm.courtVip" :disabled="isReadOnly">
+                  <el-option label="是" :value="1"></el-option>
+                  <el-option label="否" :value="0"></el-option>
+                </el-select>
+              </el-form-item>
               <!-- 场地费用 -->
               <el-form-item label="场地费用">
                 <el-input v-model="courtForm.courtFee" :disabled="isReadOnly"></el-input>
@@ -91,14 +92,38 @@
           </div>
         </el-dialog>
 
+        <!-- 预约对话框 -->
+        <el-dialog :visible.sync="reserveDialogVisible" title="预约场地" width="30%" @close="handleCloseDialog">
+          <!-- 预约对话框内容 -->
+          <div>
+            <!-- 预约起止时间选择器 -->
+            <div class="block">
+              <span class="demonstration">选择预约起止时间：</span>
+              <el-date-picker
+                v-model="reservationTime"
+                type="datetimerange"
+                range-separator="至"
+                start-placeholder="开始日期时间"
+                end-placeholder="结束日期时间">
+              </el-date-picker>
+            </div>
+          </div>
+          <!-- 预约对话框底部按钮 -->
+          <div slot="footer" class="dialog-footer" style="text-align: center;">
+            <el-button @click="handleCloseDialog">取消</el-button>
+            <el-button type="primary" @click="confirmReservation">确定预约</el-button>
+          </div>
+        </el-dialog>
+
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { listCourts, addCourt, updateCourt, deleteCourt, getCourt } from '@/api/featherball/court'
-import {listVenues} from "@/api/featherball/venue";
+import {listCourts, addCourt, updateCourt, deleteCourt, getCourt} from '@/api/featherball/court'
+import {listVenues} from "@/api/featherball/venue"
+import {addReservation} from '@/api/featherball/reservation'
 
 export default {
   data() {
@@ -125,7 +150,11 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10
-      }
+      },
+      // 预约对话框
+      reserveDialogVisible: false, // 控制预约对话框的显示与隐藏
+      reservationTime: [],// 存储预约起止时间的数组，数组的第一个元素为开始时间，第二个元素为结束时间
+      selectedCourtId: null,// 选中的场地ID，默认为null
     }
   },
   created() {
@@ -143,6 +172,7 @@ export default {
         this.loading = false
       })
     },
+
     // 获取场馆列表
     fetchVenues() {
       listVenues().then(response => {
@@ -153,6 +183,7 @@ export default {
         }));
       });
     },
+
     // 清空表单数据
     clearForm() {
       this.courtForm = {
@@ -162,6 +193,7 @@ export default {
         courtFee: ''
       }
     },
+
     // 添加场地
     handleAddCourt() {
       this.dialogTitle = "新增场地"
@@ -169,6 +201,7 @@ export default {
       this.isReadOnly = false // 设置为可编辑模式
       this.dialogVisible = true // 打开对话框
     },
+
     // 添加场地
     addCourt() {
       // 验证场地名称是否为空
@@ -187,6 +220,7 @@ export default {
         this.clearForm()
       })
     },
+
     // 更新场地
     updateCourt() {
       updateCourt(this.courtForm).then(response => {
@@ -200,6 +234,7 @@ export default {
         this.dialogButtonText = '更新成功'
       })
     },
+
     // 删除场地
     deleteCourt(courtId) {
       deleteCourt(courtId).then(response => {
@@ -208,6 +243,7 @@ export default {
         this.fetchCourts()
       })
     },
+
     // 编辑按钮点击事件
     handleEdit(row) {
       // 将编辑的场地数据填充到表单中
@@ -217,6 +253,7 @@ export default {
       this.isReadOnly = false // 设置为可编辑模式
       this.dialogVisible = true // 打开对话框
     },
+
     // 提交表单
     handleSubmit() {
       if (this.dialogButtonText === '更新') {
@@ -229,6 +266,7 @@ export default {
         this.handleCloseDialog()
       }
     },
+
     // 删除按钮点击事件
     handleDelete(row) {
       // 弹出确认框，确认删除后调用删除场地方法
@@ -241,6 +279,7 @@ export default {
         this.deleteCourt(row.courtId)
       })
     },
+
     // 查看场地
     handleView(row) {
       this.dialogTitle = '查看场地' // 设置对话框标题为查看场地
@@ -252,10 +291,41 @@ export default {
         this.dialogVisible = true // 打开对话框
       })
     },
+
     // 关闭对话框
     handleCloseDialog() {
       this.clearForm()
       this.dialogVisible = false
+    },
+
+    // 处理预约按钮点击事件
+    handleReservation(row) {
+      this.dialogTitle = '预约场地'; // 设置对话框标题为预约场地
+      this.reserveDialogVisible = true; // 打开预约对话框
+      // 将选中的场地ID赋值给selectedCourtId
+      this.selectedCourtId = row.courtId;
+    },
+
+    // 确定预约
+    confirmReservation() {
+      // 获取预约起止时间
+      const [startTime, endTime] = this.reservationTime;
+      // 执行预约操作，这里假设调用后端接口进行预约
+      addReservation({
+        courtId: this.selectedCourtId, // 传入场地ID
+        startTime, // 传入预约开始时间
+        endTime // 传入预约结束时间
+      }).then(() => {
+        // 预约成功后的处理逻辑
+        this.$message.success('预约成功！');
+        // 关闭预约对话框
+        this.reserveDialogVisible = false;
+        // 清空预约起止时间
+        this.reservationTime = [];
+      }).catch(() => {
+        // 预约失败后的处理逻辑
+        this.$message.error('预约失败，请重试！');
+      });
     }
   }
 }

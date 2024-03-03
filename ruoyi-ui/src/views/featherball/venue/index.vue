@@ -28,7 +28,7 @@
           </el-table-column>
           <el-table-column label="操作" align="center" width="280px">
             <template slot-scope="scope">
-              <el-button type="info" size="mini" @click="openReviewDialog(scope.row)" >评论</el-button>
+              <el-button type="info" size="mini" @click="openReviewDialog(scope.row)">评论</el-button>
               <el-button type="success" size="mini" @click="handleView(scope.row)">查看</el-button>
               <el-button type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
               <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
@@ -178,6 +178,7 @@ export default {
         this.loading = false
       })
     },
+
     // 清空表单数据
     clearForm() {
       this.venueForm = {
@@ -189,6 +190,7 @@ export default {
         venueDescription: ''
       }
     },
+
     // 添加场馆
     handleAddVenue() {
       this.dialogTitle = "新增场馆"
@@ -196,6 +198,7 @@ export default {
       this.isReadOnly = false // 设置为可编辑模式
       this.dialogVisible = true // 打开对话框
     },
+
     // 添加场馆
     addVenue() {
       // 验证场馆名称是否为空
@@ -215,6 +218,7 @@ export default {
         this.clearForm()
       })
     },
+
     // 更新场馆
     updateVenue() {
       updateVenue(this.venueForm).then(response => {
@@ -228,6 +232,7 @@ export default {
         this.dialogButtonText = '更新成功'
       })
     },
+
     // 删除场馆
     deleteVenue(venueId) {
       deleteVenue(venueId).then(response => {
@@ -236,6 +241,7 @@ export default {
         this.fetchVenues()
       })
     },
+
     // 编辑按钮点击事件
     handleEdit(row) {
       // 将编辑的场馆数据填充到表单中
@@ -245,6 +251,7 @@ export default {
       this.isReadOnly = false // 设置为可编辑模式
       this.dialogVisible = true // 打开对话框
     },
+
     // 提交表单
     handleSubmit() {
       if (this.dialogButtonText === '更新') {
@@ -257,6 +264,7 @@ export default {
         this.handleCloseDialog()
       }
     },
+
     // 删除按钮点击事件
     handleDelete(row) {
       // 弹出确认框，确认删除后调用删除场馆方法
@@ -269,6 +277,7 @@ export default {
         this.deleteVenue(row.venueId)
       })
     },
+
     // 查看场馆
     handleView(row) {
       this.dialogTitle = '查看场馆' // 设置对话框标题为查看场馆
@@ -280,11 +289,13 @@ export default {
         this.dialogVisible = true // 打开对话框
       })
     },
+
     // 关闭对话框
     handleCloseDialog() {
       this.clearForm()
       this.dialogVisible = false
     },
+
     // 打开评论对话框并加载评论列表
     openReviewDialog(row) {
       this.selectedVenue = row

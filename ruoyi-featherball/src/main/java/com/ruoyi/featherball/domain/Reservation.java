@@ -36,14 +36,42 @@ public class Reservation implements Serializable {
     private Long userId;
 
     /**
+     * 用户名称
+     */
+    @TableField(exist = false)
+    private String userName;
+
+    /**
      * 场地ID
      */
     private Long courtId;
 
     /**
-     * 预约时间
+     * 场地编号
      */
-    private LocalDateTime reservationTime;
+    @TableField(exist = false)
+    private Integer courtNumber;
+
+    /**
+     * 场教练ID
+     */
+    private Long trainerId;
+
+    /**
+     * 教练名称
+     */
+    @TableField(exist = false)
+    private String trainerName;
+
+    /**
+     * 预约起始时间
+     */
+    private LocalDateTime startTime;
+
+    /**
+     * 预约终止时间
+     */
+    private LocalDateTime endTime;
 
     /**
      * 预约状态，0预约，1取消
