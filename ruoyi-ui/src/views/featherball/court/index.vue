@@ -98,7 +98,7 @@
           <div>
             <!-- 预约起止时间选择器 -->
             <div class="block">
-              <span class="demonstration">选择预约起止时间：</span>
+              <span class="demonstration" style="display: block; margin-bottom: 10px;">选择预约起止时间：</span>
               <el-date-picker
                 v-model="reservationTime"
                 type="datetimerange"
