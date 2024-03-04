@@ -26,4 +26,5 @@
 1. npm install前需要换源，执行npm config set registry https://registry.npmmirror.com
 2. 前端首次启动进入ruoyi-ui目录后，执行npm install即可
 3. 如果node版本高于16，在idea终端打开进入ruoyi-ui目录后，执行 $env:NODE_OPTIONS="--openssl-legacy-provider" 后再执行npm run dev
+4. 如果在用DBeaver执行数据库脚本时报错，则添加额外的命令参数 --default-character-set=utf8mb4
 
