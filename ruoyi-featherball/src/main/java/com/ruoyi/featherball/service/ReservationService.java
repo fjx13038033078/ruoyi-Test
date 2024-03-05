@@ -45,4 +45,11 @@ public interface ReservationService {
      * @return 删除成功返回 true，否则返回 false
      */
     boolean deleteReservation(Long reservationId);
+
+    /**
+     * 如果该场地不可预约，或者该场地为 VIP 场地，且用户不是 VIP 用户，给出提示
+     * @param courtId 场地ID
+     * @return 如果需要提示，则返回提示信息；否则返回空字符串
+     */
+    void getVIPUserNotification(Long courtId);
 }

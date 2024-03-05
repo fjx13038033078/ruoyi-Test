@@ -44,3 +44,12 @@ export function deleteReservation(reservationId) {
     params: { reservationId }
   })
 }
+
+// 获取场地预约提示信息
+export function getVIPUserNotification(courtId) {
+  return request({
+    url: '/featherBall/reservation/getVIP',
+    method: 'get',
+    params: { courtId }
+  })
+}

@@ -54,4 +54,11 @@ public class ReservationController extends BaseController {
     public AjaxResult deleteReservation(@RequestParam Long reservationId) {
         return toAjax(reservationService.deleteReservation(reservationId));
     }
+
+    //如果该场地不可预约，或者该场地为 VIP 场地，且用户不是 VIP 用户，给出提示
+    @GetMapping("/getVIP")
+    public AjaxResult getVIPUserNotification(@RequestParam Long courtId){
+        reservationService.getVIPUserNotification(courtId);
+        return success();
+    }
 }

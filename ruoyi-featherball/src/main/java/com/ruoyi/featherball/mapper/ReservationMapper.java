@@ -49,4 +49,12 @@ public interface ReservationMapper {
      * @return 删除成功返回影响的行数，否则返回0
      */
     int deleteReservation(Long reservationId);
+
+    /**
+     * 根据预约ID查询预约信息
+     *
+     * @param courtId 预约ID
+     * @return 预约信息
+     */
+    List<Reservation> getReservationByCourtId(Long courtId);
 }
