@@ -198,7 +198,6 @@ export default {
       this.isReadOnly = false // 设置为可编辑模式
       this.dialogVisible = true // 打开对话框
     },
-
     // 添加场馆
     addVenue() {
       // 验证场馆名称是否为空

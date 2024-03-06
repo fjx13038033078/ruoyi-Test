@@ -104,7 +104,9 @@
                 type="datetimerange"
                 range-separator="至"
                 start-placeholder="开始日期时间"
-                end-placeholder="结束日期时间">
+                end-placeholder="结束日期时间"
+                :picker-options="pickerOptions"
+                format="yyyy-MM-DD HH:mm">
               </el-date-picker>
             </div>
           </div>
@@ -155,6 +157,25 @@ export default {
       reserveDialogVisible: false, // 控制预约对话框的显示与隐藏
       reservationTime: [],// 存储预约起止时间的数组，数组的第一个元素为开始时间，第二个元素为结束时间
       selectedCourtId: null,// 选中的场地ID，默认为null
+      pickerOptions: {
+        disabledDate(time) {
+          // 获取当前日期
+          const today = new Date();
+          // 获取一周后的日期
+          const oneWeekLater = new Date(today.getTime() + 8 * 24 * 60 * 60 * 1000);
+          // 将时间戳转换为年月日格式的字符串
+          const currentDate = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+          const oneWeekLaterDate = oneWeekLater.getFullYear() + '-' + (oneWeekLater.getMonth() + 1) + '-' + oneWeekLater.getDate();
+          // 将当前日期转换为毫秒数
+          const currentTime = new Date(currentDate).getTime();
+          // 将一周后日期转换为毫秒数
+          const oneWeekLaterTime = new Date(oneWeekLaterDate).getTime();
+          // 将传入的时间参数转换为毫秒数
+          const targetTime = time.getTime();
+          // 如果传入时间小于等于当前时间或者大于一周后的时间，则禁用
+          return targetTime <= currentTime || targetTime >= oneWeekLaterTime;
+        }
+      }
     }
   },
   created() {
