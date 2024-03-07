@@ -11,8 +11,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.ruoyi.common.utils.PageUtils.startPage;
 
@@ -74,6 +77,7 @@ public class ReservationServiceImpl implements ReservationService {
         checkReservationTimeConflict(reservation);
         Long userId = SecurityUtils.getUserId(); // 获取当前登录用户的ID
         reservation.setUserId(userId);
+        reservation.setReservationStatus(0);
         int rows = reservationMapper.addReservation(reservation);
         return rows > 0;
     }
@@ -134,6 +138,22 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     /**
+     * 取消预约
+     * @param reservationId 待取消预约的预约ID
+     * @return 取消成功返回 true，否则返回 false
+     */
+    @Override
+    public boolean cancelReservation(Long reservationId) {
+        Reservation reservation = reservationMapper.getReservationById(reservationId);
+        if (reservation != null && reservation.getReservationStatus() == 0) { // 如果预约状态为预约
+            reservation.setReservationStatus(1); // 设置预约状态为取消
+            int rows = reservationMapper.updateReservation(reservation); // 更新预约信息
+            return rows > 0;
+        }
+        return false;
+    }
+
+    /**
      * 检查当前预约时间与场地其他预约时间是否存在冲突
      *
      * @param reservation 当前预约信息
@@ -142,8 +162,31 @@ public class ReservationServiceImpl implements ReservationService {
     private void checkReservationTimeConflict(Reservation reservation) {
         LocalDateTime startTime = reservation.getStartTime();
         LocalDateTime endTime = reservation.getEndTime();
+
+        // 判断开始时间是否早于早八点
+        LocalTime startTimeLimit = LocalTime.of(8, 0);
+        if (startTime.toLocalTime().isBefore(startTimeLimit)) {
+            throw new RuntimeException("开始时间不能早于早上8点！");
+        }
+
+        // 判断结束时间是否晚于晚10点
+        LocalTime endTimeLimit = LocalTime.of(22, 0);
+        if (endTime.toLocalTime().isAfter(endTimeLimit)) {
+            throw new RuntimeException("结束时间不能晚于晚上10点！");
+        }
+
+        // 检查开始时间和结束时间之间的间隔是否超过三小时
+        long durationHours = Duration.between(startTime, endTime).toHours();
+        if (durationHours > 3) {
+            throw new RuntimeException("预约时间段不能超过三小时！");
+        }
+
         // 获取场地的所有预约信息
-        List<Reservation> reservationList = reservationMapper.getReservationByCourtId(reservation.getCourtId());
+        List<Reservation> reservationList = reservationMapper.getReservationByCourtId(reservation.getCourtId())
+                .stream()
+                .filter(r -> r.getReservationStatus() == 0)// 过滤掉状态为取消的预约
+                .collect(Collectors.toList());// 将过滤后的预约信息收集到列表中
+
         // 遍历场地的所有预约信息，检查是否存在时间冲突
         for (Reservation existingReservation : reservationList) {
             LocalDateTime existingStartTime = existingReservation.getStartTime();

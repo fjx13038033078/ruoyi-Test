@@ -52,4 +52,11 @@ public interface ReservationService {
      * @return 如果需要提示，则返回提示信息；否则返回空字符串
      */
     void getVIPUserNotification(Long courtId);
+
+    /**
+     * 取消预约
+     * @param reservationId 待取消预约的预约ID
+     * @return 取消成功返回 true，否则返回 false
+     */
+    boolean cancelReservation(Long reservationId);
 }

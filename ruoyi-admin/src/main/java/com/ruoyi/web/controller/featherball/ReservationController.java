@@ -61,4 +61,11 @@ public class ReservationController extends BaseController {
         reservationService.getVIPUserNotification(courtId);
         return success();
     }
+
+    //取消预约
+    @GetMapping("/cancel")
+    public AjaxResult cancelReservation(@RequestParam Long reservationId){
+        reservationService.cancelReservation(reservationId);
+        return success();
+    }
 }

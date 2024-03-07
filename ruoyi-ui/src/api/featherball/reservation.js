@@ -53,3 +53,12 @@ export function getVIPUserNotification(courtId) {
     params: { courtId }
   })
 }
+
+// 取消预约
+export function cancelReservation(reservationId) {
+  return request({
+    url: '/featherBall/reservation/cancel',
+    method: 'get',
+    params: { reservationId }
+  })
+}

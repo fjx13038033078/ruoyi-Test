@@ -76,7 +76,7 @@ public class Reservation implements Serializable {
     /**
      * 预约状态，0预约，1取消
      */
-    private ReservationStatusEnum reservationStatus;
+    private Integer reservationStatus;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
