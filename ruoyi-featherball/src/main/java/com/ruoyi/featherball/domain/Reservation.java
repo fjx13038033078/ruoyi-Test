@@ -42,6 +42,12 @@ public class Reservation implements Serializable {
     private String userName;
 
     /**
+     * 场馆名称
+     */
+    @TableField(exist = false)
+    private String venueName;
+
+    /**
      * 场地ID
      */
     private Long courtId;

@@ -9,6 +9,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		<result property="roleId"     column="role_id"      />
 	</resultMap>
 
+	<select id="searchAllByRoleId" parameterType="Long">
+		select user_id from sys_user_role where role_id = #{roleId}
+	</select>
+
 	<delete id="deleteUserRoleByUserId" parameterType="Long">
 		delete from sys_user_role where user_id=#{userId}
 	</delete>

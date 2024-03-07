@@ -436,11 +436,8 @@ public class SysRoleServiceImpl implements ISysRoleService
      */
     @Override
     public String selectStringRoleByUserId(Long userId){
-        log.info("userId2: "+ userId);
         Set<String> roles = selectRolePermissionByUserId(userId);
-        log.info("roles:"+ roles);
         if (roles != null && !roles.isEmpty()) {
-            log.info("role: "+ roles.toArray()[0]);
             return roles.iterator().next();
         } else {
             return null; // 或者抛出异常或返回默认角色

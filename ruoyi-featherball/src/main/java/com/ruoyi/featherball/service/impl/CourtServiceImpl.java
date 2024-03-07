@@ -1,13 +1,17 @@
 package com.ruoyi.featherball.service.impl;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.featherball.domain.Court;
 import com.ruoyi.featherball.mapper.CourtMapper;
 import com.ruoyi.featherball.mapper.VenueMapper;
 import com.ruoyi.featherball.service.CourtService;
+import com.ruoyi.system.mapper.SysUserRoleMapper;
+import com.ruoyi.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +30,10 @@ public class CourtServiceImpl implements CourtService {
 
     private final VenueMapper venueMapper;
 
+    private final SysUserRoleMapper sysUserRoleMapper;
+
+    private final ISysUserService iSysUserService;
+
     /**
      * 获取所有场地
      * @return 所有场地列表
@@ -39,6 +47,7 @@ public class CourtServiceImpl implements CourtService {
             // 将场馆名称设置到 Court 对象中
             court.setVenueName(venueName);
         }
+        fillTrainerName(allCourts);
         return allCourts;
     }
 
@@ -115,5 +124,33 @@ public class CourtServiceImpl implements CourtService {
         Court existingCourt = courtMapper.getCourtById(court.getCourtId());
         // 比较数据库中的场地编号和更新后的场地编号是否相同
         return !existingCourt.getCourtNumber().equals(court.getCourtNumber());
+    }
+
+    /**
+     * 查询所有教练员
+     * @return
+     */
+    public List<SysUser> getTrainer(){
+        List<Long> userIds = sysUserRoleMapper.searchAllByRoleId(2L);
+        List<SysUser> trainers = new ArrayList<>();
+        for (Long userId : userIds){
+            SysUser trainer = iSysUserService.selectUserById(userId);
+            trainers.add(trainer);
+        }
+        return trainers;
+    }
+
+    /**
+     * 填充court中教练员名称
+     * @param courts
+     */
+    private void fillTrainerName(List<Court> courts){
+        for (Court court : courts){
+            Long trainerId = court.getTrainerId();
+            if (trainerId != null) {
+                String nickName = iSysUserService.selectUserById(trainerId).getNickName();
+                court.setTrainerName(nickName);
+            }
+        }
     }
 }

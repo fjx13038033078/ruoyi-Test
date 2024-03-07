@@ -61,6 +61,16 @@ public class Court implements Serializable {
      */
     private Integer courtVip;
 
+    /**
+     * 教练ID
+     */
+    private Long trainerId;
+
+    /**
+     * 教练名称
+     */
+    private String trainerName;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }

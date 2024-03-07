@@ -15,6 +15,7 @@
           <el-table-column label="场地ID" prop="courtId" align="center"></el-table-column>
           <el-table-column label="场馆名称" prop="venueName" align="center"></el-table-column>
           <el-table-column label="场地编号" prop="courtNumber" align="center"></el-table-column>
+          <el-table-column label="教练名称" prop="trainerName" align="center"></el-table-column>
           <el-table-column label="场地状态" prop="courtStatus" align="center">
             <template slot-scope="scope">
               {{ scope.row.courtStatus === 0 ? '不可预约' : '可预约' }}
@@ -64,6 +65,17 @@
               <!-- 场地编号 -->
               <el-form-item label="场地编号">
                 <el-input v-model="courtForm.courtNumber" :disabled="isReadOnly"></el-input>
+              </el-form-item>
+              <!-- 教练员下拉选择 -->
+              <el-form-item label="选择教练员">
+                <el-select v-model="courtForm.trainerId" placeholder="请选择教练员" :disabled="isReadOnly">
+                  <el-option
+                    v-for="trainer in trainerOptions"
+                    :key="trainer.userId"
+                    :label="trainer.nickName"
+                    :value="trainer.userId"
+                  ></el-option>
+                </el-select>
               </el-form-item>
               <!-- 场地状态 -->
               <el-form-item label="场地状态">
@@ -123,7 +135,7 @@
 </template>
 
 <script>
-import {listCourts, addCourt, updateCourt, deleteCourt, getCourt} from '@/api/featherball/court'
+import {listCourts, addCourt, updateCourt, deleteCourt, getCourt, listTrainers} from '@/api/featherball/court'
 import {listVenues} from "@/api/featherball/venue"
 import {addReservation, getVIPUserNotification } from '@/api/featherball/reservation'
 
@@ -135,17 +147,19 @@ export default {
       activeTab: 'court', // 当前激活的选项卡，默认为场地管理
       courtList: [], // 场地列表数据
       venueOptions: [], // 场馆选项列表
+      trainerOptions: [], // 教练员选项列表
       // 总条数
       totalCourts: 0,
       dialogVisible: false, // 控制新增场地对话框的显示与隐藏
       dialogTitle: '', // 对话框标题
       dialogButtonText: '', // 对话框按钮文本
       courtForm: { // 新增场地表单
+        trainerId: '',
         venueName: '',
         courtNumber: '',
-        courtStatus: 0, // 默认可预约
+        courtStatus: 1, // 默认可预约
         courtFee: '',
-        courtVip: '0'//默认不是VIP场地
+        courtVip: 0,//默认不是VIP场地
       },
       isReadOnly: false, // 是否只读模式
       // 查询参数
@@ -182,6 +196,7 @@ export default {
     // 在页面加载时获取场地列表
     this.fetchCourts()
     this.fetchVenues()
+    this.fetchTrainers()
   },
   methods: {
     // 获取场地列表
@@ -192,6 +207,17 @@ export default {
         this.totalCourts = response.total
         this.loading = false
       })
+    },
+
+    // 获取教练员列表
+    fetchTrainers() {
+      listTrainers().then(response => {
+        // 将后端返回的教练员列表赋值给 trainerOptions
+        this.trainerOptions = response.data.map(trainer => ({
+          userId: trainer.userId,
+          nickName: trainer.nickName
+        }));
+      });
     },
 
     // 获取场馆列表

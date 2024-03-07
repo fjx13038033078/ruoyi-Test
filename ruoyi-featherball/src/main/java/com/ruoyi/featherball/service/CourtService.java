@@ -8,6 +8,7 @@ package com.ruoyi.featherball.service;
  * @Date 2024/2/29 22:53
  */
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.featherball.domain.Court;
 
 import java.util.List;
@@ -47,4 +48,10 @@ public interface CourtService {
      * @return 删除成功返回 true，否则返回 false
      */
     boolean deleteCourt(Long courtId);
+
+    /**
+     * 查询所有教练员
+     * @return
+     */
+    public List<SysUser> getTrainer();
 }

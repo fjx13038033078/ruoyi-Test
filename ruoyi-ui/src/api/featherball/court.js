@@ -46,3 +46,11 @@ export function deleteCourt(courtId) {
     params: { courtId }
   })
 }
+
+// 查询所有教练员列表
+export function listTrainers() {
+  return request({
+    url: '/featherBall/court/getTrainer',
+    method: 'get'
+  })
+}

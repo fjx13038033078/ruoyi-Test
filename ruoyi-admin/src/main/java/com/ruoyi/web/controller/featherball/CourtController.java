@@ -54,4 +54,10 @@ public class CourtController extends BaseController {
     public AjaxResult deleteCourt(@RequestParam Long courtId) {
         return toAjax(courtService.deleteCourt(courtId));
     }
+
+    // 查询所有教练员
+    @GetMapping(value = "/getTrainer")
+    public AjaxResult getTrainer(){
+        return success(courtService.getTrainer());
+    }
 }

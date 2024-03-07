@@ -1,12 +1,15 @@
 package com.ruoyi.featherball.service.impl;
 
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.featherball.domain.Court;
 import com.ruoyi.featherball.domain.Reservation;
 import com.ruoyi.featherball.mapper.ReservationMapper;
 import com.ruoyi.featherball.service.CourtService;
 import com.ruoyi.featherball.service.ReservationService;
+import com.ruoyi.featherball.service.VenueService;
 import com.ruoyi.system.service.ISysRoleService;
+import com.ruoyi.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -36,6 +39,10 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final ISysRoleService iSysRoleService;
 
+    private  final ISysUserService iSysUserService;
+
+    private final VenueService venueService;
+
     /**
      * 获取所有预约信息
      *
@@ -48,10 +55,16 @@ public class ReservationServiceImpl implements ReservationService {
         String role = iSysRoleService.selectStringRoleByUserId(userId);
         if (role.equalsIgnoreCase("admin")){
             startPage();
-            return reservationMapper.getAllReservations();
+            List<Reservation> allReservations = reservationMapper.getAllReservations();
+            fillTrainerAndUserName(allReservations);
+            fillCourtNumberAndVenueName(allReservations);
+            return allReservations;
         } else {
             startPage();
-            return reservationMapper.getReservationByUserId(userId);
+            List<Reservation> reservationByUserId = reservationMapper.getReservationByUserId(userId);
+            fillTrainerAndUserName(reservationByUserId);
+            fillCourtNumberAndVenueName(reservationByUserId);
+            return reservationByUserId;
         }
     }
 
@@ -200,4 +213,46 @@ public class ReservationServiceImpl implements ReservationService {
             }
         }
     }
+
+    /**
+     * 填充交易记录中的教练名称和用户名称
+     *
+     * @param reservations 待填充的预约记录列表
+     */
+    private void fillTrainerAndUserName(List<Reservation> reservations){
+        for (Reservation reservation : reservations){
+            // 获取用户名称
+            Long userId = reservation.getUserId();
+            SysUser user = iSysUserService.selectUserById(userId);
+            if (user != null) {
+                reservation.setUserName(user.getNickName());
+            }
+            // 获取教练名称
+            Long trainerId = reservation.getTrainerId();
+            SysUser trainer = iSysUserService.selectUserById(trainerId);
+            if (trainer != null) {
+                reservation.setTrainerName(trainer.getNickName());
+            }
+        }
+    }
+
+    /**
+     * 填充交易记录中的场地编号和场馆名称
+     *
+     * @param reservations 待填充的预约记录列表
+     */
+    private void fillCourtNumberAndVenueName(List<Reservation> reservations){
+        for (Reservation reservation : reservations){
+            //填充交易记录中的场地编号
+            Long courtId = reservation.getCourtId();
+            Court court = courtService.getCourtById(courtId);
+            Integer courtNumber = court.getCourtNumber();
+            reservation.setCourtNumber(courtNumber);
+            //填充交易记录中的场馆名称
+            Long venueId = court.getVenueId();
+            String venueName = venueService.getVenueById(venueId).getVenueName();
+            reservation.setVenueName(venueName);
+        }
+    }
+
 }

@@ -6,7 +6,10 @@
         <!-- 预约列表 -->
         <el-table :data="reservationList" v-loading="loading" style="width: 100%" border>
           <el-table-column label="预约ID" prop="reservationId" align="center"></el-table-column>
-          <el-table-column label="场地名称" prop="courtName" align="center"></el-table-column>
+          <el-table-column label="场馆名称" prop="venueName" align="center"></el-table-column>
+          <el-table-column label="场地编号" prop="courtNumber" align="center"></el-table-column>
+          <el-table-column label="用户名称" prop="userName" align="center"></el-table-column>
+          <el-table-column label="教练名称" prop="trainerName" align="center"></el-table-column>
           <el-table-column label="开始时间" prop="startTime" align="center"></el-table-column>
           <el-table-column label="结束时间" prop="endTime" align="center"></el-table-column>
           <el-table-column label="预约状态" prop="reservationStatus" align="center">

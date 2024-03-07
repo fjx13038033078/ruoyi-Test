@@ -2,9 +2,11 @@ package com.ruoyi.web.controller.featherball;
 
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.featherball.domain.Reservation;
 import com.ruoyi.featherball.service.ReservationService;
+import com.ruoyi.system.service.ISysUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -68,4 +70,5 @@ public class ReservationController extends BaseController {
         reservationService.cancelReservation(reservationId);
         return success();
     }
+
 }
