@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.ruoyi.common.utils.PageUtils.startPage;
+
 /**
  * 场地预约service接口实现类
  *
@@ -29,7 +31,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     private final CourtService courtService;
 
-    private ISysRoleService roleService;
+    private final ISysRoleService iSysRoleService;
 
     /**
      * 获取所有预约信息
@@ -38,7 +40,16 @@ public class ReservationServiceImpl implements ReservationService {
      */
     @Override
     public List<Reservation> getAllReservations() {
-        return reservationMapper.getAllReservations();
+        // 获取当前登录用户ID
+        Long userId = SecurityUtils.getUserId();
+        String role = iSysRoleService.selectStringRoleByUserId(userId);
+        if (role.equalsIgnoreCase("admin")){
+            startPage();
+            return reservationMapper.getAllReservations();
+        } else {
+            startPage();
+            return reservationMapper.getReservationByUserId(userId);
+        }
     }
 
     /**
@@ -105,7 +116,7 @@ public class ReservationServiceImpl implements ReservationService {
         // 从场地服务中获取场地状态
         Integer courtStatus = court.getCourtStatus();
         // 如果场地不可预约，则抛出异常
-        if (courtStatus == 1) {
+        if (courtStatus == 0) {
             throw new RuntimeException("该场地不可预约");
         }
 
@@ -114,7 +125,7 @@ public class ReservationServiceImpl implements ReservationService {
         // 获取当前登录用户的ID
         Long userId = SecurityUtils.getUserId();
         // 从角色服务中获取当前用户的角色
-        String role = roleService.selectStringRoleByUserId(userId);
+        String role = iSysRoleService.selectStringRoleByUserId(userId);
 
         // 如果场地为 VIP 场地且当前用户不是 VIP 用户，则抛出异常
         if (courtVip == 1 && !role.equalsIgnoreCase("VIP")) {

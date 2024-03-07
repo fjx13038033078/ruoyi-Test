@@ -22,6 +22,7 @@ import com.ruoyi.system.mapper.SysRoleMapper;
 import com.ruoyi.system.mapper.SysRoleMenuMapper;
 import com.ruoyi.system.mapper.SysUserRoleMapper;
 import com.ruoyi.system.service.ISysRoleService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @author ruoyi
  */
+@Slf4j
 @Service
 public class SysRoleServiceImpl implements ISysRoleService
 {
@@ -93,7 +95,9 @@ public class SysRoleServiceImpl implements ISysRoleService
     @Override
     public Set<String> selectRolePermissionByUserId(Long userId)
     {
+        log.info("userId1:"+userId);
         List<SysRole> perms = roleMapper.selectRolePermissionByUserId(userId);
+        log.info("perms: "+perms);
         Set<String> permsSet = new HashSet<>();
         for (SysRole perm : perms)
         {
@@ -102,6 +106,7 @@ public class SysRoleServiceImpl implements ISysRoleService
                 permsSet.addAll(Arrays.asList(perm.getRoleKey().trim().split(",")));
             }
         }
+        log.info("permsSet: "+permsSet);
         return permsSet;
     }
 
@@ -429,7 +434,16 @@ public class SysRoleServiceImpl implements ISysRoleService
      * @param userId
      * @return
      */
+    @Override
     public String selectStringRoleByUserId(Long userId){
-        return (String) selectRolePermissionByUserId(userId).toArray()[0];
+        log.info("userId2: "+ userId);
+        Set<String> roles = selectRolePermissionByUserId(userId);
+        log.info("roles:"+ roles);
+        if (roles != null && !roles.isEmpty()) {
+            log.info("role: "+ roles.toArray()[0]);
+            return roles.iterator().next();
+        } else {
+            return null; // 或者抛出异常或返回默认角色
+        }
     }
 }

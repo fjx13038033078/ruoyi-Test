@@ -53,8 +53,16 @@ public interface ReservationMapper {
     /**
      * 根据预约ID查询预约信息
      *
-     * @param courtId 预约ID
+     * @param courtId 场地ID
      * @return 预约信息
      */
     List<Reservation> getReservationByCourtId(Long courtId);
+
+    /**
+     * 根据预约ID查询预约信息
+     *
+     * @param userId 用户ID
+     * @return 预约信息
+     */
+    List<Reservation> getReservationByUserId(Long userId);
 }

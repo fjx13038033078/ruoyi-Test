@@ -24,9 +24,14 @@
         SELECT * FROM cfcr_reservation WHERE reservation_id = #{reservationId}
     </select>
 
-    <!-- 根据预约ID查询预约信息 -->
+    <!-- 根据场地ID查询预约信息 -->
     <select id="getReservationByCourtId" parameterType="Long" resultMap="ReservationResult">
         SELECT * FROM cfcr_reservation WHERE court_id = #{couryId}
+    </select>
+
+    <!-- 根据场地ID查询预约信息 -->
+    <select id="getReservationByUserId" parameterType="Long" resultMap="ReservationResult">
+        SELECT * FROM cfcr_reservation WHERE user_id = #{userId}
     </select>
 
     <!-- 添加预约信息 -->

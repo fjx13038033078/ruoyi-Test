@@ -125,7 +125,7 @@
 <script>
 import {listCourts, addCourt, updateCourt, deleteCourt, getCourt} from '@/api/featherball/court'
 import {listVenues} from "@/api/featherball/venue"
-import {addReservation} from '@/api/featherball/reservation'
+import {addReservation, getVIPUserNotification } from '@/api/featherball/reservation'
 
 export default {
   data() {
@@ -321,10 +321,23 @@ export default {
 
     // 处理预约按钮点击事件
     handleReservation(row) {
-      this.dialogTitle = '预约场地'; // 设置对话框标题为预约场地
-      this.reserveDialogVisible = true; // 打开预约对话框
-      // 将选中的场地ID赋值给selectedCourtId
-      this.selectedCourtId = row.courtId;
+      // 获取场地ID
+      const courtId = row.courtId;
+      // 调用获取场地预约提示信息的方法
+      getVIPUserNotification(courtId).then(response => {
+        // 处理返回的提示信息
+        const notification = response.message;
+        if (notification) {
+          // 如果有提示信息，则弹出提示
+          this.$message.warning(notification);
+        } else {
+          // 如果没有提示信息，则继续执行预约操作
+          this.dialogTitle = '预约场地'; // 设置对话框标题为预约场地
+          this.reserveDialogVisible = true; // 打开预约对话框
+          // 将选中的场地ID赋值给selectedCourtId
+          this.selectedCourtId = courtId;
+        }
+      });
     },
 
     // 确定预约
@@ -343,9 +356,6 @@ export default {
         this.reserveDialogVisible = false;
         // 清空预约起止时间
         this.reservationTime = [];
-      }).catch(() => {
-        // 预约失败后的处理逻辑
-        this.$message.error('预约失败，请重试！');
       });
     }
   }
