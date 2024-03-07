@@ -31,7 +31,7 @@
 
     <!-- 根据场地ID查询预约信息 -->
     <select id="getReservationByUserId" parameterType="Long" resultMap="ReservationResult">
-        SELECT * FROM cfcr_reservation WHERE user_id = #{userId}
+        SELECT * FROM cfcr_reservation WHERE user_id = #{userId} order by reservation_id desc
     </select>
 
     <!-- 添加预约信息 -->
