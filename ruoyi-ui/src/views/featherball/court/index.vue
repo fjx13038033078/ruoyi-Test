@@ -6,7 +6,7 @@
         <!-- 添加场地按钮 -->
         <el-row :gutter="20" class="mb-20" style="margin-bottom: 20px;">
           <el-col>
-            <el-button type="primary" @click="handleAddCourt">新增场地</el-button>
+            <el-button type="primary" @click="handleAddCourt" v-hasPermi="['featherball:court:add']">新增场地</el-button>
           </el-col>
         </el-row>
 
@@ -29,10 +29,10 @@
           <el-table-column label="场地费用" prop="courtFee" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="280px">
             <template slot-scope="scope">
-              <el-button type="info" size="mini" @click="handleReservation(scope.row)">预约</el-button>
-              <el-button type="success" size="mini" @click="handleView(scope.row)">查看</el-button>
-              <el-button type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-              <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+              <el-button type="info" size="mini" @click="handleReservation(scope.row)" v-hasPermi="['featherball:court:reservation']">预约</el-button>
+              <el-button type="success" size="mini" @click="handleView(scope.row)" v-hasPermi="['featherball:court:detail']">查看</el-button>
+              <el-button type="primary" size="mini" @click="handleEdit(scope.row)" v-hasPermi="['featherball:court:edit']">编辑</el-button>
+              <el-button type="danger" size="mini" @click="handleDelete(scope.row)" v-hasPermi="['featherball:court:delete']">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

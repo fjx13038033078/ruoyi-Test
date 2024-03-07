@@ -6,7 +6,7 @@
         <!-- 添加场馆按钮 -->
         <el-row :gutter="20" class="mb-20" style="margin-bottom: 20px;">
           <el-col>
-            <el-button type="primary" @click="handleAddVenue">新增场馆</el-button>
+            <el-button type="primary" @click="handleAddVenue" v-hasPermi="['featherball:venue:add']">新增场馆</el-button>
           </el-col>
         </el-row>
 
@@ -28,10 +28,10 @@
           </el-table-column>
           <el-table-column label="操作" align="center" width="280px">
             <template slot-scope="scope">
-              <el-button type="info" size="mini" @click="openReviewDialog(scope.row)">评论</el-button>
-              <el-button type="success" size="mini" @click="handleView(scope.row)">查看</el-button>
-              <el-button type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-              <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+              <el-button type="info" size="mini" @click="openReviewDialog(scope.row)" v-hasPermi="['featherball:venue:review']">评论</el-button>
+              <el-button type="success" size="mini" @click="handleView(scope.row)" v-hasPermi="['featherball:venue:detail']">查看</el-button>
+              <el-button type="primary" size="mini" @click="handleEdit(scope.row)" v-hasPermi="['featherball:venue:edit']">编辑</el-button>
+              <el-button type="danger" size="mini" @click="handleDelete(scope.row)" v-hasPermi="['featherball:venue:delete']">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -109,7 +109,7 @@
             <div class="review-content">
               <p>{{ review.comment }}</p>
               <!-- 删除按钮 -->
-              <el-button type="danger" size="mini" @click="handleDeleteReview(review.reviewId)">删除</el-button>
+              <el-button type="danger" size="mini" @click="handleDeleteReview(review.reviewId)" v-hasPermi="['featherball:venue:reviewdelete']">删除</el-button>
             </div>
           </div>
 
@@ -119,7 +119,7 @@
           <!-- 新增评论输入框 -->
           <div class="new-review">
             <el-input v-model="newReview" placeholder="请输入评论内容"></el-input>
-            <el-button type="success" size="mini" @click="handleAddReview">发送评论</el-button>
+            <el-button type="success" size="mini" @click="handleAddReview" v-hasPermi="['featherball:venue:reviewadd']">发送评论</el-button>
           </div>
         </el-dialog>
 
