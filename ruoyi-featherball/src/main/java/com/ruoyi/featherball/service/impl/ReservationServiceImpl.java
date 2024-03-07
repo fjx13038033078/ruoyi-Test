@@ -158,12 +158,14 @@ public class ReservationServiceImpl implements ReservationService {
     @Override
     public boolean cancelReservation(Long reservationId) {
         Reservation reservation = reservationMapper.getReservationById(reservationId);
-        if (reservation != null && reservation.getReservationStatus() == 0) { // 如果预约状态为预约
+        if (reservation != null && reservation.getReservationStatus() == 1){
+            throw new RuntimeException("已经是取消状态，请勿重复取消");
+        }
+        else { // 如果预约状态为预约
             reservation.setReservationStatus(1); // 设置预约状态为取消
             int rows = reservationMapper.updateReservation(reservation); // 更新预约信息
             return rows > 0;
         }
-        return false;
     }
 
     /**

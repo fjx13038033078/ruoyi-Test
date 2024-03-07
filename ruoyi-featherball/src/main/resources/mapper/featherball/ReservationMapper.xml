@@ -16,7 +16,7 @@
 
     <!-- 查询所有预约信息 -->
     <select id="getAllReservations" resultMap="ReservationResult">
-        SELECT * FROM cfcr_reservation
+        SELECT * FROM cfcr_reservation order by reservation_id desc
     </select>
 
     <!-- 根据预约ID查询预约信息 -->
