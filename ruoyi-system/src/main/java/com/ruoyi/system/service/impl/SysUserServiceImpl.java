@@ -76,6 +76,32 @@ public class SysUserServiceImpl implements ISysUserService
     }
 
     /**
+     * 根据条件分页查询教练列表
+     *
+     * @param user 用户信息
+     * @return 用户信息集合信息
+     */
+    @Override
+    @DataScope(deptAlias = "d", userAlias = "u")
+    public List<SysUser> selectTrainerList(SysUser user)
+    {
+        return userMapper.selectTrainerList(user);
+    }
+
+    /**
+     * 根据条件分页查询Vip列表
+     *
+     * @param user 用户信息
+     * @return 用户信息集合信息
+     */
+    @Override
+    @DataScope(deptAlias = "d", userAlias = "u")
+    public List<SysUser> selectVipList(SysUser user)
+    {
+        return userMapper.selectVipList(user);
+    }
+
+    /**
      * 根据条件分页查询已分配用户角色列表
      * 
      * @param user 用户信息
