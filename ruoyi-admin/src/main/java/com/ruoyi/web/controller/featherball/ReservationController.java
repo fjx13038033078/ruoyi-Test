@@ -28,7 +28,7 @@ public class ReservationController extends BaseController {
     // 获取所有预约信息列表
     @GetMapping("/listAll")
     public TableDataInfo listAllReservations() {
-        startPage();
+//        startPage();
         List<Reservation> allReservations = reservationService.getAllReservations();
         return getDataTable(allReservations);
     }

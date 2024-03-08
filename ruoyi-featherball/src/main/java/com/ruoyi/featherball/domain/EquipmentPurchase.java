@@ -1,6 +1,7 @@
 package com.ruoyi.featherball.domain;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
@@ -32,7 +33,13 @@ public class EquipmentPurchase implements Serializable {
     private Long venueId;
 
     /**
-     * 商品类别
+     * 场馆名称
+     */
+    @TableField(exist = false)
+    private String venueName;
+
+    /**
+     * 商品类别：0球拍，1羽毛球，2球鞋，3饮料，4运动服
      */
     private Integer equipmentPurchaseType;
 
