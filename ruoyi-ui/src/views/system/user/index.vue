@@ -153,6 +153,7 @@
               ></el-switch>
             </template>
           </el-table-column>
+          <el-table-column label="余额" align="center" key="balance" prop="balance" v-if="columns[6].visible" />
           <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[6].visible" width="160">
             <template slot-scope="scope">
               <span>{{ parseTime(scope.row.createTime) }}</span>
@@ -291,6 +292,13 @@
                   :disabled="item.status == 1"
                 ></el-option>
               </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="24">
+            <el-form-item label="余额">
+              <el-input v-model="form.balance" type="number" placeholder="请输入金额"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -521,6 +529,7 @@ export default {
         sex: undefined,
         status: "0",
         remark: undefined,
+        balance:undefined,
         postIds: [],
         roleIds: []
       };
