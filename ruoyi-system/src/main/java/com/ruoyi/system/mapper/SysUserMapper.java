@@ -21,6 +21,22 @@ public interface SysUserMapper
     public List<SysUser> selectUserList(SysUser sysUser);
 
     /**
+     * 根据条件分页查询用户列表
+     *
+     * @param sysUser 用户信息
+     * @return 用户信息集合信息
+     */
+    public List<SysUser> selectTrainerList(SysUser sysUser);
+
+    /**
+     * 根据条件分页查询用户列表
+     *
+     * @param sysUser 用户信息
+     * @return 用户信息集合信息
+     */
+    public List<SysUser> selectVipList(SysUser sysUser);
+
+    /**
      * 根据条件分页查询已配用户角色列表
      * 
      * @param user 用户信息
@@ -76,6 +92,14 @@ public interface SysUserMapper
      * @return 结果
      */
     public int updateUserAvatar(@Param("userName") String userName, @Param("avatar") String avatar);
+
+    /**
+     * 修改用户余额
+     *
+     * @param user 用户
+     * @return 结果
+     */
+    public int updateUserBalance(SysUser user);
 
     /**
      * 重置用户密码

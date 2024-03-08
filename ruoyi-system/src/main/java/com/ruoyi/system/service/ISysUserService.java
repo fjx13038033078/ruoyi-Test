@@ -18,6 +18,10 @@ public interface ISysUserService
      */
     public List<SysUser> selectUserList(SysUser user);
 
+    public List<SysUser> selectTrainerList(SysUser user);
+
+    public List<SysUser> selectVipList(SysUser user);
+
     /**
      * 根据条件分页查询已分配用户角色列表
      * 
@@ -143,6 +147,14 @@ public interface ISysUserService
      * @return 结果
      */
     public int updateUserStatus(SysUser user);
+
+    /**
+     * 修改用户余额
+     *
+     * @param user 用户信息
+     * @return 结果
+     */
+    public int updateUserBalance(SysUser user);
 
     /**
      * 修改用户基本信息
