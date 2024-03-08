@@ -2,6 +2,7 @@ package com.ruoyi.featherball.service.impl;
 
 import com.ruoyi.featherball.domain.EquipmentPurchase;
 import com.ruoyi.featherball.mapper.EquipmentPurchaseMapper;
+import com.ruoyi.featherball.mapper.VenueMapper;
 import com.ruoyi.featherball.service.EquipmentPurchaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,13 +23,20 @@ public class EquipmentPurchaseServiceImpl implements EquipmentPurchaseService {
 
     private final EquipmentPurchaseMapper equipmentPurchaseMapper;
 
+    private final VenueMapper venueMapper;
+
     /**
      * 获取所有商品购买记录
      * @return 所有商品购买记录列表
      */
     @Override
     public List<EquipmentPurchase> getAllEquipmentPurchases() {
-        return equipmentPurchaseMapper.getAllEquipmentPurchases();
+        List<EquipmentPurchase> allEquipmentPurchases = equipmentPurchaseMapper.getAllEquipmentPurchases();
+        for (EquipmentPurchase equipmentPurchase : allEquipmentPurchases){
+            Long venueId = equipmentPurchase.getVenueId();
+            equipmentPurchase.setVenueName(venueMapper.getVenueById(venueId).getVenueName());
+        }
+        return allEquipmentPurchases;
     }
 
     /**

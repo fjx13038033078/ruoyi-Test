@@ -13,7 +13,7 @@
         <!-- 维修商品列表 -->
         <el-table :data="equipmentRepairList" v-loading="loading" style="width: 100%" border>
           <el-table-column label="维修商品ID" prop="equipmentRepairId" align="center"></el-table-column>
-          <el-table-column label="场馆ID" prop="venueId" align="center"></el-table-column>
+          <el-table-column label="场馆名称" prop="venueName" align="center"></el-table-column>
           <el-table-column label="维修商品类别" align="center">
             <template slot-scope="scope">
               {{ formatEquipmentType(scope.row.equipmentRepairType) }}
@@ -56,9 +56,9 @@
               <!-- 维修商品类别 -->
               <el-form-item label="维修商品类别">
                 <el-select v-model="equipmentForm.equipmentRepairType">
-                  <el-option label="类别1" :value="1"></el-option>
-                  <el-option label="类别2" :value="2"></el-option>
-                  <el-option label="类别3" :value="3"></el-option>
+                  <el-option label="球拍" :value="0"></el-option>
+                  <el-option label="球网" :value="1"></el-option>
+                  <el-option label="球鞋" :value="2"></el-option>
                   <!-- 其他选项 -->
                 </el-select>
               </el-form-item>
@@ -71,7 +71,7 @@
           <!-- 对话框按钮 -->
           <div slot="footer" class="dialog-footer" style="text-align: center;">
             <el-button @click="handleCloseDialog">取消</el-button>
-            <el-button type="primary" @click="handleAdd">添加</el-button>
+            <el-button type="primary" @click="handleSubmit">{{ dialogButtonText }}</el-button>
           </div>
         </el-dialog>
 
@@ -93,6 +93,8 @@ export default {
       activeTab: 'equipmentRepair', // 当前激活的选项卡，默认为商品维修管理
       equipmentRepairList: [], // 维修商品列表数据
       venueOptions:[],
+      dialogTitle: '', // 对话框标题
+      dialogButtonText: '', // 对话框按钮文本
       // 总条数
       totalEquipmentRepairs: 0,
       // 查询参数
@@ -101,7 +103,6 @@ export default {
         pageSize: 10
       },
       dialogVisible: false, // 控制添加维修商品对话框的显示与隐藏
-      dialogTitle: '新增维修商品', // 对话框标题
       equipmentForm: { // 新增维修商品表单
         venueId: '',
         equipmentRepairType: '',
@@ -122,13 +123,9 @@ export default {
           case 0:
             return '球拍';
           case 1:
-            return '羽毛球';
+            return '球网';
           case 2:
             return '球鞋';
-          case 3:
-            return '饮料';
-          case 4:
-            return '运动服';
           default:
             return '';
         }
@@ -166,13 +163,28 @@ export default {
       }
     },
 
-    // 添加维修商品
-    handleAddEquipmentRepair() {
-      this.dialogVisible = true // 打开对话框
+    // 提交表单
+    handleSubmit() {
+      if (this.dialogButtonText === '更新') {
+        // 调用更新场地的方法
+        this.updateEquipmentRepair()
+      } else if (this.dialogButtonText === "添加") {
+        // 调用添加场地的方法
+        this.addEquipmentRepair()
+      } else {
+        this.handleCloseDialog()
+      }
     },
 
     // 添加维修商品
-    handleAdd() {
+    handleAddEquipmentRepair() {
+      this.dialogVisible = true // 打开对话框
+      this.dialogTitle = "新增维修配件"
+      this.dialogButtonText = "添加"
+    },
+
+    // 添加维修商品
+    addEquipmentRepair() {
       addEquipmentRepair(this.equipmentForm).then(response => {
         // 处理添加维修商品成功的情况
         // 添加成功后重新获取维修商品列表
@@ -185,8 +197,31 @@ export default {
 
     // 编辑按钮点击事件
     handleEdit(row) {
-      // 编辑维修商品，传入维修商品的信息
-      // 你可以根据具体需求来实现该方法
+      // 将当前要编辑的维修商品的信息赋值给编辑表单
+      this.equipmentForm = {
+        equipmentRepairId: row.equipmentRepairId,
+        venueId: row.venueId,
+        equipmentRepairType: row.equipmentRepairType,
+        equipmentRepairFee: row.equipmentRepairFee
+      };
+      // 打开编辑对话框
+      this.dialogTitle = '编辑维修配件';
+      this.dialogVisible = true;
+      this.dialogButtonText = '更新'
+    },
+
+    // 更新维修配件
+    updateEquipmentRepair() {
+      updateEquipmentRepair(this.equipmentForm).then(response => {
+        // 处理更新场地成功的情况
+        // 更新成功后重新获取场地列表
+        this.fetchEquipmentRepairs()
+        this.dialogVisible = false // 关闭对话框
+        // 清空表单数据
+        this.clearForm()
+        // 将对话框按钮文本设置为其他值，避免再次触发更新操作
+        this.dialogButtonText = '更新成功'
+      })
     },
 
     // 删除按钮点击事件

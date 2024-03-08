@@ -13,7 +13,7 @@
         <!-- 购买商品列表 -->
         <el-table :data="equipmentPurchaseList" v-loading="loading" style="width: 100%" border>
           <el-table-column label="购买商品ID" prop="equipmentPurchaseId" align="center"></el-table-column>
-          <el-table-column label="场馆ID" prop="venueId" align="center"></el-table-column>
+          <el-table-column label="场馆名称" prop="venueName" align="center"></el-table-column>
           <el-table-column label="商品类别" align="center">
             <template slot-scope="scope">
               {{ formatEquipmentType(scope.row.equipmentPurchaseType) }}
@@ -77,7 +77,7 @@
           <!-- 对话框按钮 -->
           <div slot="footer" class="dialog-footer" style="text-align: center;">
             <el-button @click="handleCloseDialog">取消</el-button>
-            <el-button type="primary" @click="handleAdd">添加</el-button>
+            <el-button type="primary" @click="handleSubmit">{{ dialogButtonText }}</el-button>
           </div>
         </el-dialog>
 
@@ -99,6 +99,8 @@ export default {
       activeTab: 'equipmentPurchase', // 当前激活的选项卡，默认为商品购买管理
       equipmentPurchaseList: [], // 购买商品列表数据
       venueOptions: [], // 场馆选项列表
+      dialogTitle: '', // 对话框标题
+      dialogButtonText: '', // 对话框按钮文本
       // 总条数
       totalEquipmentPurchases: 0,
       // 查询参数
@@ -107,7 +109,6 @@ export default {
         pageSize: 10
       },
       dialogVisible: false, // 控制添加购买商品对话框的显示与隐藏
-      dialogTitle: '新增购买商品', // 对话框标题
       equipmentForm: { // 新增购买商品表单
         venueId: '',
         equipmentPurchaseType: '',
@@ -171,12 +172,28 @@ export default {
         equipmentPurchaseFee: ''
       }
     },
+
+    // 提交表单
+    handleSubmit() {
+      if (this.dialogButtonText === '更新') {
+        // 调用更新场地的方法
+        this.updateEquipmentPurchase()
+      } else if (this.dialogButtonText === "添加") {
+        // 调用添加场地的方法
+        this.addEquipmentPurchase()
+      } else {
+        this.handleCloseDialog()
+      }
+    },
+
     // 添加购买商品
     handleAddEquipmentPurchase() {
+      this.dialogTitle = "新增购买商品"
+      this.dialogButtonText = "添加"
       this.dialogVisible = true // 打开对话框
     },
     // 添加购买商品
-    handleAdd() {
+    addEquipmentPurchase() {
       addEquipmentPurchase(this.equipmentForm).then(response => {
         // 处理添加购买商品成功的情况
         // 添加成功后重新获取购买商品列表
@@ -186,6 +203,37 @@ export default {
         this.clearForm()
       })
     },
+
+    // 更新购买商品
+    updateEquipmentPurchase() {
+      updateEquipmentPurchase(this.equipmentForm).then(response => {
+        // 处理更新场地成功的情况
+        // 更新成功后重新获取场地列表
+        this.fetchEquipmentPurchases()
+        this.dialogVisible = false // 关闭对话框
+        // 清空表单数据
+        this.clearForm()
+        // 将对话框按钮文本设置为其他值，避免再次触发更新操作
+        this.dialogButtonText = '更新成功'
+      })
+    },
+
+    // 编辑按钮点击事件
+    handleEdit(row) {
+      // 将当前要编辑的购买商品的信息赋值给编辑表单
+      this.equipmentForm = {
+        equipmentPurchaseId: row.equipmentPurchaseId,
+        venueId: row.venueId,
+        equipmentPurchaseType: row.equipmentPurchaseType,
+        equipmentPurchaseNumber: row.equipmentPurchaseNumber,
+        equipmentPurchaseFee: row.equipmentPurchaseFee
+      };
+      // 打开编辑对话框
+      this.dialogTitle = '编辑购买商品';
+      this.dialogVisible = true;
+      this.dialogButtonText = '更新'
+    },
+
     // 删除购买商品
     confirmDelete(row) {
       MessageBox.confirm('确认删除该购买商品吗？', '提示', {

@@ -2,6 +2,7 @@ package com.ruoyi.featherball.service.impl;
 
 import com.ruoyi.featherball.domain.EquipmentRepair;
 import com.ruoyi.featherball.mapper.EquipmentRepairMapper;
+import com.ruoyi.featherball.mapper.VenueMapper;
 import com.ruoyi.featherball.service.EquipmentRepairService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,11 +20,19 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class EquipmentRepairServiceImpl implements EquipmentRepairService {
+
     private final EquipmentRepairMapper equipmentRepairMapper;
+
+    private final VenueMapper venueMapper;
 
     @Override
     public List<EquipmentRepair> getAllEquipmentRepairs() {
-        return equipmentRepairMapper.getAllEquipmentRepairs();
+        List<EquipmentRepair> allEquipmentRepairs = equipmentRepairMapper.getAllEquipmentRepairs();
+        for (EquipmentRepair equipmentRepair : allEquipmentRepairs){
+            Long venueId = equipmentRepair.getVenueId();
+            equipmentRepair.setVenueName(venueMapper.getVenueById(venueId).getVenueName());
+        }
+        return allEquipmentRepairs;
     }
 
     @Override
