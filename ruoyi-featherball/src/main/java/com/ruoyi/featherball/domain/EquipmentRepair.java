@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -18,6 +19,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @ToString
+@RequiredArgsConstructor
 public class EquipmentRepair implements Serializable {
 
     /**

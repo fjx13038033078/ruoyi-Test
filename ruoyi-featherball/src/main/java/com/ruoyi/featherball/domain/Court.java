@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @ToString
+@RequiredArgsConstructor
 public class Court implements Serializable {
 
     /**

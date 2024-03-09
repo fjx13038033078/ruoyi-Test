@@ -22,6 +22,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
+@RequiredArgsConstructor
 public class Venue implements Serializable {
 
     /**

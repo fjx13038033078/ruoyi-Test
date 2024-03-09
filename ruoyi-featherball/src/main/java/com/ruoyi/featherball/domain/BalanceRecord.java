@@ -13,21 +13,34 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 
 /**
- * @Author 范佳兴
- * @date 2024/3/8 11:09
+ * 余额记录表实体类
+ *
+ * @Author fanjaixing
+ * @Date 2024/3/8 23:50
  */
-@TableName("cfcr_equipment_purchase")
 @Getter
 @Setter
 @ToString
 @RequiredArgsConstructor
-public class EquipmentPurchase implements Serializable {
+@TableName("cfcr_balance_record")
+public class BalanceRecord implements Serializable {
 
     /**
      * 主键
      */
     @TableId(type = IdType.AUTO)
-    private Long equipmentPurchaseId;
+    private Long recordId;
+
+    /**
+     * 用户ID
+     */
+    private Long userId;
+
+    /**
+     * 用户姓名
+     */
+    @TableField(exist = false)
+    private String userName;
 
     /**
      * 场馆ID
@@ -41,19 +54,25 @@ public class EquipmentPurchase implements Serializable {
     private String venueName;
 
     /**
-     * 商品类别：0球拍，1羽毛球，2球鞋，3饮料，4运动服
+     * 交易类型：0收入，1购买，2维修
      */
-    private Integer equipmentPurchaseType;
+    private Integer transactionType;
 
     /**
-     * 商品个数
+     * 交易金额
      */
-    private Integer equipmentPurchaseNumber;
+    private BigDecimal transactionAmount;
 
     /**
-     * 商品单价
+     * 交易时间
      */
-    private BigDecimal equipmentPurchaseFee;
+    private String transactionTime;
 
+    /**
+     * 余额
+     */
+    private BigDecimal balance;
+
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 }
