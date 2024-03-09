@@ -15,7 +15,7 @@
           </el-table-column>
           <el-table-column label="交易金额" prop="transactionAmount" align="center"></el-table-column>
           <el-table-column label="交易时间" prop="transactionTime" align="center"></el-table-column>
-          <el-table-column label="余额" prop="balance" align="center"></el-table-column>
+          <el-table-column label="交易后余额" prop="balance" align="center"></el-table-column>
         </el-table>
 
         <!-- 分页组件 -->

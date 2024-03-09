@@ -60,4 +60,10 @@ public class CourtController extends BaseController {
     public AjaxResult getTrainer(){
         return success(courtService.getTrainer());
     }
+
+    // 查场馆与场地数量的映射
+    @GetMapping(value = "/getMap")
+    public AjaxResult getVenueCourtCountMap(){
+        return success(courtService.getVenueCourtCountMap());
+    }
 }

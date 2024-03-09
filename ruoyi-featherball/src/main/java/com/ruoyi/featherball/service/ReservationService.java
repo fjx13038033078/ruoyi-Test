@@ -55,8 +55,8 @@ public interface ReservationService {
 
     /**
      * 取消预约
+     *
      * @param reservationId 待取消预约的预约ID
-     * @return 取消成功返回 true，否则返回 false
      */
-    boolean cancelReservation(Long reservationId);
+    void cancelReservation(Long reservationId);
 }

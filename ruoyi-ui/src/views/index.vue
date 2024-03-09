@@ -24,7 +24,7 @@
       <!-- 通知公告 -->
       <el-row style="margin-top: 20px;">
         <el-col :span="12">
-          <el-card style="margin-right: 20px;">
+          <el-card style="margin-right: 20px; height: 420px;">
             <h3 slot="header">通知公告</h3>
             <el-table v-loading="loading" :data="noticeList" @selection-change="handleSelectionChange">
               <el-table-column label="序号" align="center" prop="noticeId" width="100"/>
@@ -51,6 +51,13 @@
             </el-table>
           </el-card>
         </el-col>
+        <!-- 场馆场地数量 -->
+        <el-col :span="12">
+          <el-card style="margin-right: 20px; height: 420px;">
+            <h3 slot="header">场地数量</h3>
+              <div id="venueCourtChart" style="height: 300px;"></div> <!-- echarts 柱状图 -->
+          </el-card>
+        </el-col>
       </el-row>
       <!-- 弹出的公告内容卡片 -->
       <el-dialog :title="selectedNotice.title" :visible.sync="showNoticeDialog" width="780px" append-to-body>
@@ -63,6 +70,9 @@
 <script>
 import {listNotice, getNotice} from "@/api/system/notice";
 import request from '@/utils/request';
+import {getVenueCourtCountMap} from "@/api/featherball/court";
+import * as echarts from 'echarts'
+
 
 export default {
   name: "Notice",
@@ -87,6 +97,7 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
+      venueCourtMapData: {}, // 存储场馆场地数量映射的数据
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -116,6 +127,9 @@ export default {
   created() {
     this.getList();
   },
+  mounted() {
+    this.initVenueCourtChart(); // 初始化 echarts 柱状图
+  },
   methods: {
     /** 查询公告列表 */
     getList() {
@@ -135,6 +149,39 @@ export default {
         this.loading = false;
       });
     },
+    // 获取场馆场地数量映射的数据并更新到图表中
+    fetchVenueCourtMapData() {
+      getVenueCourtCountMap().then(response => {
+        this.venueCourtMapData = response.data;
+        this.updateVenueCourtChart(); // 获取到数据后更新图表
+      });
+    },
+    // 初始化 echarts 柱状图
+    initVenueCourtChart() {
+      this.venueCourtChart = echarts.init(document.getElementById("venueCourtChart"));
+      this.fetchVenueCourtMapData(); // 获取数据并更新图表
+    },
+    // 更新 echarts 柱状图
+    updateVenueCourtChart() {
+      // 使用获取到的数据更新图表
+      const venueNames = Object.keys(this.venueCourtMapData);
+      const courtCounts = Object.values(this.venueCourtMapData);
+      const option = {
+        // echarts 配置项
+        xAxis: {
+          type: "category",
+          data: venueNames
+        },
+        yAxis: {
+          type: "value"
+        },
+        series: [{
+          data: courtCounts,
+          type: "bar"
+        }]
+      };
+      this.venueCourtChart.setOption(option);
+    }
   }
 };
 </script>

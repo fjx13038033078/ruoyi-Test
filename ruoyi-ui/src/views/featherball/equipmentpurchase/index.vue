@@ -23,6 +23,7 @@
           <el-table-column label="商品单价" prop="equipmentPurchaseFee" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="280px">
             <template slot-scope="scope">
+              <el-button type="success" size="mini" @click="handlePurchase(scope.row)">购买</el-button>
               <el-button type="primary" size="mini" @click="handleEdit(scope.row)">修改</el-button>
               <el-button type="danger" size="mini" @click="confirmDelete(scope.row)">删除</el-button>
             </template>
@@ -90,6 +91,7 @@
 import { listEquipmentPurchases, addEquipmentPurchase, updateEquipmentPurchase, deleteEquipmentPurchase } from '@/api/featherball/equipmentPurchase'
 import { MessageBox } from 'element-ui';
 import {listVenues} from "@/api/featherball/venue"
+import {addBalanceRecord} from "@/api/featherball/balanceRecord";
 
 export default {
   data() {
@@ -232,6 +234,22 @@ export default {
       this.dialogTitle = '编辑购买商品';
       this.dialogVisible = true;
       this.dialogButtonText = '更新'
+    },
+
+    // 处理购买操作
+    handlePurchase(row) {
+      // 获取购买商品信息
+      const { venueId, venueName, equipmentPurchaseFee } = row;
+      // 调用添加订单记录接口
+      addBalanceRecord({
+        venueId: venueId,
+        venueName: venueName,
+        transactionAmount: equipmentPurchaseFee, // 使用购买商品的费用作为交易金额
+        transactionType: 1 // 假设购买为交易类型5
+      }).then(() => {
+        // 添加订单记录成功后的处理逻辑
+        this.$message.success('购买成功！');
+      });
     },
 
     // 删除购买商品

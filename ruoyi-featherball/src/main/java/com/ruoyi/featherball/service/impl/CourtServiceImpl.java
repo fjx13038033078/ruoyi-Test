@@ -2,6 +2,7 @@ package com.ruoyi.featherball.service.impl;
 
 import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.featherball.domain.Court;
+import com.ruoyi.featherball.domain.Venue;
 import com.ruoyi.featherball.mapper.CourtMapper;
 import com.ruoyi.featherball.mapper.VenueMapper;
 import com.ruoyi.featherball.service.CourtService;
@@ -12,7 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -152,5 +155,19 @@ public class CourtServiceImpl implements CourtService {
                 court.setTrainerName(nickName);
             }
         }
+    }
+
+    @Override
+    public Map<String, Integer> getVenueCourtCountMap() {
+        // 获取所有场馆
+        List<Venue> allVenues = venueMapper.getAllVenues();
+        // 获取每个场馆对应的场地数量
+        Map<String, Integer> venueCourtCountMap = new HashMap<>();
+        for (Venue venue : allVenues) {
+            Long venueId = venue.getVenueId();
+            int courtCount = courtMapper.countByVenueId(venueId);
+            venueCourtCountMap.put(venue.getVenueName(), courtCount);
+        }
+        return venueCourtCountMap;
     }
 }

@@ -46,6 +46,10 @@
         SELECT COUNT(*) FROM cfcr_court WHERE venue_id = #{venueId} and court_number = #{courtNumber}
     </select>
 
+    <select id="countByVenueId" parameterType="Long" resultType="int">
+        SELECT COUNT(*) FROM cfcr_court WHERE venue_id = #{venueId}
+    </select>
+
 
 </mapper>
 

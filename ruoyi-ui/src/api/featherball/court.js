@@ -54,3 +54,11 @@ export function listTrainers() {
     method: 'get'
   })
 }
+
+// 查询场馆与场地数量的映射
+export function getVenueCourtCountMap() {
+  return request({
+    url: '/featherBall/court/getMap',
+    method: 'get'
+  })
+}

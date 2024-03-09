@@ -118,7 +118,7 @@
                 start-placeholder="开始日期时间"
                 end-placeholder="结束日期时间"
                 :picker-options="pickerOptions"
-                format="yyyy-MM-DD HH:mm">
+                format="yyyy-MM-dd HH:mm">
               </el-date-picker>
             </div>
           </div>
@@ -138,6 +138,7 @@
 import {listCourts, addCourt, updateCourt, deleteCourt, getCourt, listTrainers} from '@/api/featherball/court'
 import {listVenues} from "@/api/featherball/venue"
 import {addReservation, getVIPUserNotification } from '@/api/featherball/reservation'
+import {addBalanceRecord} from "@/api/featherball/balanceRecord";
 
 export default {
   data() {
@@ -154,6 +155,7 @@ export default {
       dialogTitle: '', // 对话框标题
       dialogButtonText: '', // 对话框按钮文本
       courtForm: { // 新增场地表单
+        venueId:'',
         trainerId: '',
         venueName: '',
         courtNumber: '',
@@ -349,6 +351,9 @@ export default {
     handleReservation(row) {
       // 获取场地ID
       const courtId = row.courtId;
+      this.courtForm.courtFee = row.courtFee
+      this.courtForm.venueName = row.venueName
+      this.courtForm.venueId = row.venueId
       // 调用获取场地预约提示信息的方法
       getVIPUserNotification(courtId).then(response => {
         // 处理返回的提示信息
@@ -376,13 +381,22 @@ export default {
         startTime, // 传入预约开始时间
         endTime // 传入预约结束时间
       }).then(() => {
-        // 预约成功后的处理逻辑
-        this.$message.success('预约成功！');
-        // 关闭预约对话框
-        this.reserveDialogVisible = false;
-        // 清空预约起止时间
-        this.reservationTime = [];
-      });
+        // 添加订单记录
+        addBalanceRecord({
+          venueId:this.courtForm.venueId,
+          venueName:this.courtForm.venueName,
+          transactionAmount: this.courtForm.courtFee, // 场地费用作为交易金额
+          transactionType: 3 // 假设预约为交易类型3
+        }).then(() => {
+          // 预约成功后的处理逻辑
+          this.$message.success('预约成功！');
+          // 添加订单记录成功的处理逻辑
+          // 关闭预约对话框
+          this.reserveDialogVisible = false;
+          // 清空预约起止时间
+          this.reservationTime = [];
+        });
+      })
     }
   }
 }

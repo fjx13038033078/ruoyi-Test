@@ -22,6 +22,7 @@
           <el-table-column label="维修单价" prop="equipmentRepairFee" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="280px">
             <template slot-scope="scope">
+              <el-button type="success" size="mini" @click="handleRepair(scope.row)">维修</el-button>
               <el-button type="primary" size="mini" @click="handleEdit(scope.row)">修改</el-button>
               <el-button type="danger" size="mini" @click="confirmDelete(scope.row)">删除</el-button>
             </template>
@@ -84,6 +85,7 @@
 import { listEquipmentRepairs, addEquipmentRepair, updateEquipmentRepair, deleteEquipmentRepair } from '@/api/featherball/equipmentRepair'
 import { MessageBox } from 'element-ui';
 import {listVenues} from "@/api/featherball/venue";
+import {addBalanceRecord} from "@/api/featherball/balanceRecord";
 
 export default {
   data() {
@@ -222,6 +224,22 @@ export default {
         // 将对话框按钮文本设置为其他值，避免再次触发更新操作
         this.dialogButtonText = '更新成功'
       })
+    },
+
+    // 处理购买操作
+    handleRepair(row) {
+      // 获取购买商品信息
+      const { venueId, venueName, equipmentRepairFee } = row;
+      // 调用添加订单记录接口
+      addBalanceRecord({
+        venueId: venueId,
+        venueName: venueName,
+        transactionAmount: equipmentRepairFee, // 使用维修商品的费用作为交易金额
+        transactionType: 2 // 假设维修为交易类型2
+      }).then(() => {
+        // 添加订单记录成功后的处理逻辑
+        this.$message.success('维修成功！');
+      });
     },
 
     // 删除按钮点击事件

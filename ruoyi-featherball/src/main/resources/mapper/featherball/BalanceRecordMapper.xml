@@ -19,9 +19,26 @@
         SELECT * FROM cfcr_balance_record order by transaction_time desc
     </select>
 
-    <!-- 根据主键查询余额记录 -->
+    <!-- 根据userId查询订单记录 -->
+    <select id="getBalanceRecordsByUserId" parameterType="Long" resultMap="BalanceRecordResult">
+        SELECT * FROM cfcr_balance_record WHERE user_id = #{userId} order by transaction_time desc
+    </select>
+
+    <!-- 根据venueId查询订单记录 -->
+    <select id="getBalanceRecordsByVenueId" parameterType="Long" resultMap="BalanceRecordResult">
+        SELECT * FROM cfcr_balance_record WHERE venue_id = #{venueId} order by transaction_time desc
+    </select>
+
+    <!-- 根据主键查询订单记录 -->
     <select id="getBalanceRecordById" parameterType="Long" resultMap="BalanceRecordResult">
         SELECT * FROM cfcr_balance_record WHERE record_id = #{recordId} order by transaction_time desc
+    </select>
+
+    <select id="getBalanceTotalByType" parameterType="integer" resultType="java.math.BigDecimal">
+        SELECT SUM(transaction_amount)
+        FROM cfcr_balance_record
+        WHERE transaction_type != 0 and transaction_type = #{transactionType}
+        GROUP BY transaction_type
     </select>
 
     <!-- 添加余额记录 -->

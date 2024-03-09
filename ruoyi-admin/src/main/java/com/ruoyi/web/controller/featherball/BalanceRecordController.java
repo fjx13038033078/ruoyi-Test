@@ -42,4 +42,10 @@ public class BalanceRecordController extends BaseController {
     public AjaxResult addBalanceRecord(@RequestBody BalanceRecord balanceRecord) {
         return toAjax(balanceRecordService.addBalanceRecord(balanceRecord));
     }
+
+    // 查交易类型和消费额的映射
+    @GetMapping(value = "/getMap")
+    public AjaxResult getBalanceTotalByType(){
+        return success(balanceRecordService.getBalanceTotalByType());
+    }
 }

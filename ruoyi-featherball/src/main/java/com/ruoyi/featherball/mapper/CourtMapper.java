@@ -35,4 +35,6 @@ public interface CourtMapper {
      */
     int countByCourtNumber(@Param("venueId")Long venueId, @Param("courtNumber") Integer courtNumber);
 
+    int countByVenueId(Long venueId);
+
 }

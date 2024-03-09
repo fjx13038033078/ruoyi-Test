@@ -26,3 +26,11 @@ export function addBalanceRecord(data) {
     data: data
   })
 }
+
+// 查询交易类型和消费额的映射
+export function getBalanceTotalByType() {
+  return request({
+    url: '/featherBall/balanceRecord/getMap',
+    method: 'get'
+  })
+}

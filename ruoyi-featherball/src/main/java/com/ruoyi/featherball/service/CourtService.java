@@ -12,6 +12,7 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.featherball.domain.Court;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CourtService {
 
@@ -54,4 +55,10 @@ public interface CourtService {
      * @return
      */
     public List<SysUser> getTrainer();
+
+    /**
+     * 获取场馆及其场地数量的映射
+     * @return 场馆名称和对应场地数量的映射
+     */
+    Map<String, Integer> getVenueCourtCountMap();
 }
