@@ -5,6 +5,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.featherball.domain.BalanceRecord;
 import com.ruoyi.featherball.domain.Reservation;
 import com.ruoyi.featherball.mapper.BalanceRecordMapper;
+import com.ruoyi.featherball.mapper.EquipmentPurchaseMapper;
 import com.ruoyi.featherball.service.BalanceRecordService;
 import com.ruoyi.featherball.service.VenueService;
 import com.ruoyi.system.service.ISysRoleService;
@@ -42,6 +43,8 @@ public class BalanceRecordServiceImpl implements BalanceRecordService {
     private final ISysRoleService iSysRoleService;
 
     private final VenueService venueService;
+
+    private final EquipmentPurchaseMapper equipmentPurchaseMapper;
 
     /**
      * 获取所有订单记录信息

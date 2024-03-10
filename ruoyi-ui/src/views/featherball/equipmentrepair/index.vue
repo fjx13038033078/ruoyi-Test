@@ -6,7 +6,7 @@
         <!-- 添加维修商品按钮 -->
         <el-row :gutter="20" class="mb-20" style="margin-bottom: 20px;">
           <el-col>
-            <el-button type="primary" @click="handleAddEquipmentRepair">新增维修商品</el-button>
+            <el-button type="primary" @click="handleAddEquipmentRepair" v-hasPermi="['featherball:rep:add']">新增维修商品</el-button>
           </el-col>
         </el-row>
 
@@ -22,9 +22,9 @@
           <el-table-column label="维修单价" prop="equipmentRepairFee" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="280px">
             <template slot-scope="scope">
-              <el-button type="success" size="mini" @click="handleRepair(scope.row)">维修</el-button>
-              <el-button type="primary" size="mini" @click="handleEdit(scope.row)">修改</el-button>
-              <el-button type="danger" size="mini" @click="confirmDelete(scope.row)">删除</el-button>
+              <el-button type="success" size="mini" @click="handleRepair(scope.row)" v-hasPermi="['featherball:rep:rep']">维修</el-button>
+              <el-button type="primary" size="mini" @click="handleEdit(scope.row)" v-hasPermi="['featherball:rep:edit']">修改</el-button>
+              <el-button type="danger" size="mini" @click="confirmDelete(scope.row)" v-hasPermi="['featherball:rep:delete']">删除</el-button>
             </template>
           </el-table-column>
         </el-table>

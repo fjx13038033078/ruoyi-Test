@@ -6,7 +6,7 @@
         <!-- 添加购买商品按钮 -->
         <el-row :gutter="20" class="mb-20" style="margin-bottom: 20px;">
           <el-col>
-            <el-button type="primary" @click="handleAddEquipmentPurchase">新增购买商品</el-button>
+            <el-button type="primary" @click="handleAddEquipmentPurchase" v-hasPermi="['featherball:pur:add']">新增购买商品</el-button>
           </el-col>
         </el-row>
 
@@ -19,13 +19,13 @@
               {{ formatEquipmentType(scope.row.equipmentPurchaseType) }}
             </template>
           </el-table-column>
-          <el-table-column label="商品个数" prop="equipmentPurchaseNumber" align="center"></el-table-column>
+<!--          <el-table-column label="商品个数" prop="equipmentPurchaseNumber" align="center"></el-table-column>-->
           <el-table-column label="商品单价" prop="equipmentPurchaseFee" align="center"></el-table-column>
           <el-table-column label="操作" align="center" width="280px">
             <template slot-scope="scope">
-              <el-button type="success" size="mini" @click="handlePurchase(scope.row)">购买</el-button>
-              <el-button type="primary" size="mini" @click="handleEdit(scope.row)">修改</el-button>
-              <el-button type="danger" size="mini" @click="confirmDelete(scope.row)">删除</el-button>
+              <el-button type="success" size="mini" @click="handlePurchase(scope.row)" v-hasPermi="['featherball:pur:buy']">购买</el-button>
+              <el-button type="primary" size="mini" @click="handleEdit(scope.row)" v-hasPermi="['featherball:pur:edit']">修改</el-button>
+              <el-button type="danger" size="mini" @click="confirmDelete(scope.row)" v-hasPermi="['featherball:pur:delete']">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -65,10 +65,10 @@
                   <el-option label="运动服" :value="4"></el-option>
                 </el-select>
               </el-form-item>
-              <!-- 商品个数 -->
-              <el-form-item label="商品个数">
-                <el-input v-model="equipmentForm.equipmentPurchaseNumber"></el-input>
-              </el-form-item>
+<!--              &lt;!&ndash; 商品个数 &ndash;&gt;-->
+<!--              <el-form-item label="商品个数">-->
+<!--                <el-input v-model="equipmentForm.equipmentPurchaseNumber"></el-input>-->
+<!--              </el-form-item>-->
               <!-- 商品单价 -->
               <el-form-item label="商品单价">
                 <el-input v-model="equipmentForm.equipmentPurchaseFee"></el-input>
