@@ -47,6 +47,10 @@ user:
 
 # Spring配置
 spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
   # 资源信息
   messages:
     # 国际化资源文件路径

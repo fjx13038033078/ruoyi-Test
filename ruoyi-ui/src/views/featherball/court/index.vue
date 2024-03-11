@@ -118,7 +118,8 @@
                 start-placeholder="开始日期时间"
                 end-placeholder="结束日期时间"
                 :picker-options="pickerOptions"
-                format="yyyy-MM-dd HH:mm">
+                format="yyyy-MM-dd HH:mm:ss"
+                value-format="yyyy-MM-ddTHH:mm:ssZ">
               </el-date-picker>
             </div>
           </div>
