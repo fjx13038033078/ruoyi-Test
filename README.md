@@ -29,3 +29,6 @@
 4. 如果在用DBeaver执行数据库脚本时报错，则添加额外的命令参数 --default-character-set=utf8mb4
 5. 安装echarts执行 npm install echarts -save
 
+##联系
+1. 需要调试或者部署+v:445981543
+
