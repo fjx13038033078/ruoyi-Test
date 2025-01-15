@@ -1,5 +1,5 @@
 
-# CFCR（Court Booking for Featherball Courts的缩写）
+# SRS（Study room management system的缩写）
 
 ## 内置功能
 
