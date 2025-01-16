@@ -18,6 +18,7 @@ import com.ruoyi.system.domain.SysPost;
 import com.ruoyi.system.domain.SysUserPost;
 import com.ruoyi.system.domain.SysUserRole;
 import com.ruoyi.system.service.ISysConfigService;
+import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +53,9 @@ public class SysUserServiceImpl implements ISysUserService
 
     @Autowired
     private SysUserRoleMapper userRoleMapper;
+
+    @Autowired
+    private ISysRoleService iSysRoleService;
 
     @Autowired
     private SysUserPostMapper userPostMapper;
@@ -301,7 +305,10 @@ public class SysUserServiceImpl implements ISysUserService
     @Override
     public boolean registerUser(SysUser user)
     {
-        return userMapper.insertUser(user) > 0;
+//        return userMapper.insertUser(user) > 0;
+        int i = userMapper.insertUser(user);
+        iSysRoleService.insertDefaultRole(user.getUserId());
+        return i > 0;
     }
 
     /**
