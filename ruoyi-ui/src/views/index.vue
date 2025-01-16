@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div id="curtain">
-      <h1 data-heading="场">羽毛球场预约管理系统</h1>
+    <div ref="echartsText" style="height: 100px; display: flex; justify-content: center; align-items: center;">
+      <!-- 这里 ECharts 动画文本会被渲染 -->
     </div>
     <div>
       <el-carousel :interval="4000" type="card" height="300px">
@@ -69,7 +69,6 @@
 </template>
 <script>
 import {listNotice, getNotice} from "@/api/system/notice";
-import request from '@/utils/request';
 import {getVenueCourtCountMap} from "@/api/featherball/court";
 import * as echarts from 'echarts'
 
@@ -129,6 +128,7 @@ export default {
   },
   mounted() {
     this.initVenueCourtChart(); // 初始化 echarts 柱状图
+    this.initEchartsText(); // 初始化 ECharts 动画文本
   },
   methods: {
     /** 查询公告列表 */
@@ -181,8 +181,61 @@ export default {
         }]
       };
       this.venueCourtChart.setOption(option);
+    },
+    // 初始化 ECharts 动画文本
+    initEchartsText() {
+      const chartDom = this.$refs.echartsText;
+      const myChart = echarts.init(chartDom);
+      const option = {
+        graphic: {
+          elements: [
+            {
+              type: 'text',
+              left: 'center',
+              top: 'center',
+              style: {
+                text: '自习室预约管理系统',
+                fontSize: 80,
+                fontWeight: 'bold',
+                lineDash: [0, 200],
+                lineDashOffset: 0,
+                fill: 'transparent',
+                stroke: '#000',
+                lineWidth: 1
+              },
+              keyframeAnimation: {
+                duration: 3000,
+                loop: true,
+                keyframes: [
+                  {
+                    percent: 0.7,
+                    style: {
+                      fill: 'transparent',
+                      lineDashOffset: 200,
+                      lineDash: [200, 0]
+                    }
+                  },
+                  {
+                    percent: 0.8,
+                    style: {
+                      fill: 'transparent'
+                    }
+                  },
+                  {
+                    percent: 1,
+                    style: {
+                      fill: 'black'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      };
+      myChart.setOption(option);
     }
-  }
+  },
 };
 </script>
 
@@ -192,83 +245,6 @@ export default {
   height: auto;
   display: block;
   margin: 0 auto;
-}
-
-$h1: rgba(45, 45, 45, 1);
-$blue: #98b5cc;
-$yellow: #e30f16;
-$outline: rgba(#fff, .4);
-$shadow: rgba($yellow, .5);
-
-#curtain {
-  background: linear-gradient(45deg, rgb(182, 182, 182) 9%, rgb(56, 56, 56) 100%);
-  width: 100%;
-  height: 200px;
-  border-radius: 30px;
-  margin-bottom: 15px;
-}
-
-h1 {
-  font-family: '阿里妈妈东方大楷 Regular', sans-serif;
-  font-size: 80px;
-  text-align: center;
-  line-height: 1;
-  margin: 0;
-  top: 13%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  position: absolute;
-  color: $h1;
-  letter-spacing: 1rem;
-
-  &:before {
-    content: attr(data-heading);
-    position: absolute;
-    overflow: hidden;
-    color: $yellow;
-    width: 100%;
-    z-index: 5;
-    text-shadow: none;
-    left: 325px;
-    text-align: left;
-    animation: flicker 3s linear infinite;
-  }
-}
-
-@keyframes flicker {
-
-  0%,
-  19.999%,
-  22%,
-  62.999%,
-  64%,
-  64.999%,
-  70%,
-  100% {
-    opacity: .99;
-    text-shadow: -1px -1px 0 $outline, 1px -1px 0 $outline,
-    -1px 1px 0 $outline, 1px 1px 0 $outline,
-    0 -2px 8px, 0 0 2px, 0 0 5px #ff7e00,
-    0 0 5px #ff4444, 0 0 2px #ff7e00, 0 2px 3px #000;
-  }
-
-  20%,
-  21.999%,
-  63%,
-  63.999%,
-  65%,
-  69.999% {
-    opacity: 0.4;
-    text-shadow: none;
-  }
-}
-
-@font-face {
-  font-family: "阿里妈妈东方大楷 Regular";
-  font-weight: 400;
-  src: url("../assets/fonts/AlimamaDongFangDaKai-Regular.woff2") format("woff2"),
-  url("../assets/fonts/AlimamaDongFangDaKai-Regular.woff") format("woff");
-  font-display: swap;
 }
 
 </style>
