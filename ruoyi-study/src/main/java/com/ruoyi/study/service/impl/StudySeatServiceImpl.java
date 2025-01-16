@@ -1,7 +1,9 @@
 package com.ruoyi.study.service.impl;
 
+import com.ruoyi.study.domain.StudyRoom;
 import com.ruoyi.study.domain.StudySeat;
 import com.ruoyi.study.mapper.StudySeatMapper;
+import com.ruoyi.study.service.StudyRoomService;
 import com.ruoyi.study.service.StudySeatService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,13 +22,17 @@ public class StudySeatServiceImpl implements StudySeatService {
 
     private final StudySeatMapper studySeatMapper;
 
+    private final StudyRoomService studyRoomService;
+
     /**
      * 获取所有座位信息
      * @return 所有座位列表
      */
     @Override
     public List<StudySeat> getAllSeats() {
-        return studySeatMapper.getAllSeats();
+        List<StudySeat> allSeats = studySeatMapper.getAllSeats();
+        fillRoomName(allSeats);
+        return allSeats;
     }
 
     /**
@@ -80,5 +86,15 @@ public class StudySeatServiceImpl implements StudySeatService {
     public boolean deleteSeat(Long seatId) {
         int rows = studySeatMapper.deleteSeat(seatId);
         return rows > 0;
+    }
+
+    private void fillRoomName(List<StudySeat> studySeats) {
+        for (StudySeat studySeat : studySeats) {
+            Long roomId = studySeat.getRoomId();
+            StudyRoom studyRoom = studyRoomService.getStudyRoomById(roomId);
+            if (studyRoom != null) {
+                studySeat.setRoomName(studyRoom.getRoomName());
+            }
+        }
     }
 }

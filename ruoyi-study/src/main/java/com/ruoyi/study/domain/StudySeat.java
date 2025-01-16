@@ -36,7 +36,7 @@ public class StudySeat implements Serializable {
      * 自习室名称
      */
     @TableField(exist = false)
-    private StudyRoom roomName;
+    private String roomName;
 
     /**
      * 座位编号
