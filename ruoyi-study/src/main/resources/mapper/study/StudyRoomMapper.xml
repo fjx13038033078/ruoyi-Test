@@ -10,6 +10,7 @@
         <result property="capacity" column="capacity"/>
         <result property="location" column="location"/>
         <result property="status" column="status"/>
+        <result property="description" column="description"/>
         <result property="image" column="image"/>
     </resultMap>
 
@@ -25,14 +26,14 @@
 
     <!-- 添加自习室 -->
     <insert id="addStudyRoom" parameterType="StudyRoom">
-        INSERT INTO study_room (room_name, capacity, location, status, image)
-        VALUES (#{roomName}, #{capacity}, #{location}, #{status}, #{image})
+        INSERT INTO study_room (room_name, capacity, location, status, description, image)
+        VALUES (#{roomName}, #{capacity}, #{location}, #{status}, #{description} #{image})
     </insert>
 
     <!-- 更新自习室信息 -->
     <update id="updateStudyRoom" parameterType="StudyRoom">
         UPDATE study_room SET room_name = #{roomName}, capacity = #{capacity},
-                              location = #{location}, status = #{status}, image = #{image}
+                              location = #{location}, status = #{status}, description = #{description}, image = #{image}
         WHERE room_id = #{roomId}
     </update>
 

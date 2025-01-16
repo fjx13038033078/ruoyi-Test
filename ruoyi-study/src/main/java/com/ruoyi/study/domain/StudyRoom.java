@@ -48,6 +48,11 @@ public class StudyRoom implements Serializable {
     private Integer status;
 
     /**
+     * 自习室描述
+     */
+    private String description;
+
+    /**
      * 自习室照片
      */
     private String image;
