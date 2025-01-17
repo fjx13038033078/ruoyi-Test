@@ -27,7 +27,7 @@ public class StudyReservationController extends BaseController {
      */
     @GetMapping("/listAll")
     public TableDataInfo listAllReservations() {
-        startPage();
+//        startPage();
         List<StudyReservation> allReservations = studyReservationService.getAllReservations();
         return getDataTable(allReservations);
     }
