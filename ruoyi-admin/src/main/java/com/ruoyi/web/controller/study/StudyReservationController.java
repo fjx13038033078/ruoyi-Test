@@ -78,12 +78,12 @@ public class StudyReservationController extends BaseController {
 
     /**
      * 更新预约记录
-     * @param studyReservation 待更新的预约信息
+     * @param reservationId 待取消的预约ID
      * @return 操作结果
      */
-    @PostMapping("/update")
-    public AjaxResult updateReservation(@RequestBody StudyReservation studyReservation) {
-        return toAjax(studyReservationService.updateReservation(studyReservation));
+    @GetMapping("/cancel")
+    public AjaxResult cancelReservation(@RequestParam Long reservationId) {
+        return toAjax(studyReservationService.cancelReservation(reservationId));
     }
 
     /**

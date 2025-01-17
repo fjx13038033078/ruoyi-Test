@@ -50,6 +50,10 @@
         WHERE reservation_id = #{reservationId}
     </update>
 
+    <update id="cancelReservation" parameterType="Long">
+        UPDATE study_reservation SET status = 2 WHERE reservation_id = #{reservationId}
+    </update>
+
     <!-- 删除预约记录 -->
     <delete id="deleteReservation" parameterType="Long">
         DELETE FROM study_reservation WHERE reservation_id = #{reservationId}

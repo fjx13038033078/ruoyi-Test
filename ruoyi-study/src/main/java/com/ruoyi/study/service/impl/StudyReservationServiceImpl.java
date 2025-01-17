@@ -4,6 +4,7 @@ import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.study.domain.StudyReservation;
 import com.ruoyi.study.domain.StudyRoom;
+import com.ruoyi.study.domain.StudySeat;
 import com.ruoyi.study.mapper.StudyReservationMapper;
 import com.ruoyi.study.service.StudyReservationService;
 import com.ruoyi.study.service.StudyRoomService;
@@ -117,13 +118,12 @@ public class StudyReservationServiceImpl implements StudyReservationService {
     /**
      * 更新预约记录
      *
-     * @param studyReservation 待更新的预约信息
+     * @param reservationId 待取消的预约ID
      * @return 更新成功返回 true，否则返回 false
      */
     @Override
-    public boolean updateReservation(StudyReservation studyReservation) {
-        checkReservationTimeConflict(studyReservation);
-        int rows = studyReservationMapper.updateReservation(studyReservation);
+    public boolean cancelReservation(Long reservationId) {
+        int rows = studyReservationMapper.cancelReservation(reservationId);
         return rows > 0;
     }
 
@@ -210,9 +210,24 @@ public class StudyReservationServiceImpl implements StudyReservationService {
     private void fillRoomName(List<StudyReservation> reservations) {
         for (StudyReservation reservation : reservations) {
             Long seatId = reservation.getSeatId();
-            Long roomId = studySeatService.getSeatById(seatId).getRoomId();
+
+            // 获取座位信息
+            StudySeat seat = studySeatService.getSeatById(seatId);
+
+            // 如果座位不存在，则跳过处理
+            if (seat == null) {
+                reservation.setRoomName("座位已被删除");
+                continue; // 跳过该次循环，处理下一个预约
+            }
+
+            // 获取自习室信息
+            Long roomId = seat.getRoomId();
             StudyRoom room = studyRoomService.getStudyRoomById(roomId);
-            if (room != null) {
+
+            // 如果自习室不存在，设置默认的自习室名
+            if (room == null) {
+                reservation.setRoomName("自习室已被删除");
+            } else {
                 reservation.setRoomName(room.getRoomName());
             }
         }

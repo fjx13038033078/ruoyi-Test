@@ -46,11 +46,11 @@ export function addReservation(data) {
 }
 
 // 更新预约记录
-export function updateReservation(data) {
+export function cancelReservation(reservationId) {
   return request({
-    url: '/study/reservation/update',
-    method: 'post',
-    data: data
+    url: '/study/reservation/cancel',
+    method: 'get',
+    params: { reservationId }
   })
 }
 

@@ -59,6 +59,14 @@ public interface StudyReservationMapper {
     int updateReservation(StudyReservation studyReservation);
 
     /**
+     * 取消预约记录
+     *
+     * @param reservationId 待取消的预约ID
+     * @return 取消成功返回影响的行数，否则返回0
+     */
+    int cancelReservation(Long reservationId);
+
+    /**
      * 删除预约记录
      *
      * @param reservationId 待删除的预约ID

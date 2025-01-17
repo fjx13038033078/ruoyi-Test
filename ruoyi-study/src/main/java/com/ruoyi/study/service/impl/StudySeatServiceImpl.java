@@ -88,12 +88,20 @@ public class StudySeatServiceImpl implements StudySeatService {
         return rows > 0;
     }
 
+    /**
+     * 填充座位信息中的自习室名称
+     * @param studySeats 座位信息列表
+     */
     private void fillRoomName(List<StudySeat> studySeats) {
         for (StudySeat studySeat : studySeats) {
             Long roomId = studySeat.getRoomId();
-            StudyRoom studyRoom = studyRoomService.getStudyRoomById(roomId);
-            if (studyRoom != null) {
-                studySeat.setRoomName(studyRoom.getRoomName());
+            if (roomId == null) {
+                studySeat.setRoomName("该自习室已被删除");
+            } else {
+                StudyRoom studyRoom = studyRoomService.getStudyRoomById(roomId);
+                if (studyRoom != null) {
+                    studySeat.setRoomName(studyRoom.getRoomName());
+                }
             }
         }
     }

@@ -45,10 +45,10 @@ public interface StudyReservationService {
 
     /**
      * 更新预约记录
-     * @param studyReservation 待更新的预约信息
+     * @param reservationId 待取消的预约ID
      * @return 更新成功返回 true，否则返回 false
      */
-    boolean updateReservation(StudyReservation studyReservation);
+    boolean cancelReservation(Long reservationId);
 
     /**
      * 删除预约记录
