@@ -3,7 +3,7 @@
     <!-- 添加自习室按钮 -->
     <el-row :gutter="20" class="mb-20">
       <el-col>
-        <el-button type="primary" @click="handleAddRoom" style="margin-bottom: 20px;">新增自习室</el-button>
+        <el-button type="primary" @click="handleAddRoom" style="margin-bottom: 20px;" v-hasPermi="['study:room:add']">新增自习室</el-button>
       </el-col>
     </el-row>
 
@@ -24,8 +24,8 @@
         <template #default="scope">
           <el-button type="success" size="mini" @click="openCommentDialog(scope.row)">评论</el-button>
           <el-button type="info" size="mini" @click="handleView(scope.row)">查看</el-button>
-          <el-button type="primary" size="mini" @click="handleEdit(scope.row)">编辑</el-button>
-          <el-button type="danger" size="mini" @click="handleDelete(scope.row)">删除</el-button>
+          <el-button type="primary" size="mini" @click="handleEdit(scope.row)" v-hasPermi="['study:room:edit']">编辑</el-button>
+          <el-button type="danger" size="mini" @click="handleDelete(scope.row)" v-hasPermi="['study:room:delete']">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
