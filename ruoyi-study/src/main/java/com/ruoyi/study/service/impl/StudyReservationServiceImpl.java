@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
@@ -106,6 +107,8 @@ public class StudyReservationServiceImpl implements StudyReservationService {
      */
     @Override
     public boolean addReservation(StudyReservation studyReservation) {
+        Long userId = SecurityUtils.getUserId();
+        studyReservation.setUserId(userId);
         checkReservationTimeConflict(studyReservation);
         int rows = studyReservationMapper.addReservation(studyReservation);
         return rows > 0;
@@ -159,18 +162,18 @@ public class StudyReservationServiceImpl implements StudyReservationService {
         }
 
         // 检查开始时间和结束时间之间的间隔是否超过三小时
-//        long durationHours = Duration.between(startTime, endTime).toHours();
-//        if (durationHours > 3) {
-//            throw new RuntimeException("预约时间段不能超过三小时！");
-//        }
+        long durationHours = Duration.between(startTime, endTime).toHours();
+        if (durationHours > 12) {
+            throw new RuntimeException("预约时间段不能超过十二小时！");
+        }
 
-        // 获取场地的所有预约信息
+        // 获取座位的所有预约信息
         List<StudyReservation> reservationList = studyReservationMapper.getReservationsBySeatId(reservation.getSeatId())
                 .stream()
                 .filter(r -> r.getStatus() == 0)// 过滤掉状态为取消的预约
                 .collect(Collectors.toList());// 将过滤后的预约信息收集到列表中
 
-        // 遍历场地的所有预约信息，检查是否存在时间冲突
+        // 遍历座位的所有预约信息，检查是否存在时间冲突
         for (StudyReservation existingReservation : reservationList) {
             LocalDateTime existingStartTime = existingReservation.getStartTime();
             LocalDateTime existingEndTime = existingReservation.getEndTime();
