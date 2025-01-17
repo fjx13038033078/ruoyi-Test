@@ -24,7 +24,7 @@
               {{ getStatusText(scope.row.status) }}
             </template>
           </el-table-column>
-          <el-table-column label="操作" align="center" width="220px">
+          <el-table-column label="操作" align="center" width="240px">
             <template slot-scope="scope">
               <!-- 取消预约按钮 -->
               <el-button type="danger" size="mini" @click="cancelReservation(scope.row)" v-hasPermi="['study:reservation:cancel']">取消预约</el-button>

@@ -54,8 +54,8 @@
         <!-- 场馆场地数量 -->
         <el-col :span="12">
           <el-card style="margin-right: 20px; height: 420px;">
-            <h3 slot="header">场地数量</h3>
-              <div id="venueCourtChart" style="height: 300px;"></div> <!-- echarts 柱状图 -->
+            <h3 slot="header">系统简介</h3>
+            <p>请在这里填写更多的文字说明</p>
           </el-card>
         </el-col>
       </el-row>
@@ -96,7 +96,6 @@ export default {
       title: "",
       // 是否显示弹出层
       open: false,
-      venueCourtMapData: {}, // 存储场馆场地数量映射的数据
       // 查询参数
       queryParams: {
         pageNum: 1,
@@ -127,7 +126,6 @@ export default {
     this.getList();
   },
   mounted() {
-    this.initVenueCourtChart(); // 初始化 echarts 柱状图
     this.initEchartsText(); // 初始化 ECharts 动画文本
   },
   methods: {
@@ -148,39 +146,6 @@ export default {
         this.showNoticeDialog = true;
         this.loading = false;
       });
-    },
-    // 获取场馆场地数量映射的数据并更新到图表中
-    fetchVenueCourtMapData() {
-      getVenueCourtCountMap().then(response => {
-        this.venueCourtMapData = response.data;
-        this.updateVenueCourtChart(); // 获取到数据后更新图表
-      });
-    },
-    // 初始化 echarts 柱状图
-    initVenueCourtChart() {
-      this.venueCourtChart = echarts.init(document.getElementById("venueCourtChart"));
-      this.fetchVenueCourtMapData(); // 获取数据并更新图表
-    },
-    // 更新 echarts 柱状图
-    updateVenueCourtChart() {
-      // 使用获取到的数据更新图表
-      const venueNames = Object.keys(this.venueCourtMapData);
-      const courtCounts = Object.values(this.venueCourtMapData);
-      const option = {
-        // echarts 配置项
-        xAxis: {
-          type: "category",
-          data: venueNames
-        },
-        yAxis: {
-          type: "value"
-        },
-        series: [{
-          data: courtCounts,
-          type: "bar"
-        }]
-      };
-      this.venueCourtChart.setOption(option);
     },
     // 初始化 ECharts 动画文本
     initEchartsText() {

@@ -62,6 +62,7 @@ public class StudyReservationServiceImpl implements StudyReservationService {
             startPage();
             List<StudyReservation> reservationsByUserId = studyReservationMapper.getReservationsByUserId(userId);
             fillUserName(reservationsByUserId);
+            fillRoomName(reservationsByUserId);
             return reservationsByUserId;
         }
 
