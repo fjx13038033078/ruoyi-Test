@@ -159,7 +159,7 @@ export default {
               left: 'center',
               top: 'center',
               style: {
-                text: '自习室预约管理系统',
+                text: '高考志愿个性化推荐系统',
                 fontSize: 80,
                 fontWeight: 'bold',
                 lineDash: [0, 200],
