@@ -1,5 +1,5 @@
 
-# SRS（Study room management system的缩写）
+# CERS（College Entrance Examination Recommendation System的缩写）
 
 ## 内置功能
 
