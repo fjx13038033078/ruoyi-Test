@@ -4,29 +4,42 @@
       <!-- 这里 ECharts 动画文本会被渲染 -->
     </div>
     <div>
-      <el-carousel :interval="4000" type="card" height="300px">
-        <el-carousel-item>
-          <a href="https://www.baidu.com" target="_blank">
-            <img src="../assets/images/01.jpg" alt="Image 1" style="width: 100%;">
-          </a>
-        </el-carousel-item>
-        <el-carousel-item>
-          <a href="https://www.jd.com" target="_blank">
-            <img src="../assets/images/02.jpg" alt="Image 2" style="width: 100%;">
-          </a>
-        </el-carousel-item>
-        <el-carousel-item>
-          <a href="https://www.taobao.com" target="_blank">
-            <img src="../assets/images/03.jpg" alt="Image 3" style="width: 100%;">
-          </a>
-        </el-carousel-item>
-      </el-carousel>
+      <el-row>
+        <el-col :span="18">
+          <el-card style="margin-right: 20px; height: 340px;">
+            <el-carousel :interval="4000" type="card" height="300px">
+              <el-carousel-item>
+                <a href="https://www.hit.edu.cn/" target="_blank">
+                  <img src="../assets/images/01.jpg" alt="Image 1" style="width: 100%;">
+                </a>
+              </el-carousel-item>
+              <el-carousel-item>
+                <a href="https://www.ustb.edu.cn/" target="_blank">
+                  <img src="../assets/images/02.jpg" alt="Image 2" style="width: 100%;">
+                </a>
+              </el-carousel-item>
+              <el-carousel-item>
+                <a href="https://www.xjtu.edu.cn/" target="_blank">
+                  <img src="../assets/images/03.jpg" alt="Image 3" style="width: 100%;">
+                </a>
+              </el-carousel-item>
+            </el-carousel>
+          </el-card>
+        </el-col>
+        <el-col :span="6">
+          <el-card style="margin-right: 20px; height: 340px;">
+            <a href="https://www.16personalities.com/ch/%E4%BA%BA%E6%A0%BC%E6%B5%8B%E8%AF%95" target="_blank">
+              <img src="../assets/images/04.jpg" alt="Single Image" style="width: 95%; height: 90%; object-fit: cover;">
+            </a>
+          </el-card>
+        </el-col>
+      </el-row>
       <!-- 通知公告 -->
       <el-row style="margin-top: 20px;">
         <el-col :span="12">
           <el-card style="margin-right: 20px; height: 420px;">
             <h3 slot="header">通知公告</h3>
-            <el-table v-loading="loading" :data="noticeList" @selection-change="handleSelectionChange">
+            <el-table v-loading="loading" :data="noticeList">
               <el-table-column label="序号" align="center" prop="noticeId" width="100"/>
               <el-table-column
                 label="公告标题"
@@ -51,7 +64,7 @@
             </el-table>
           </el-card>
         </el-col>
-        <!-- 场馆场地数量 -->
+
         <el-col :span="12">
           <el-card style="margin-right: 20px; height: 420px;">
             <h3 slot="header">系统简介</h3>
@@ -69,7 +82,6 @@
 </template>
 <script>
 import {listNotice, getNotice} from "@/api/system/notice";
-import {getVenueCourtCountMap} from "@/api/featherball/court";
 import * as echarts from 'echarts'
 
 
