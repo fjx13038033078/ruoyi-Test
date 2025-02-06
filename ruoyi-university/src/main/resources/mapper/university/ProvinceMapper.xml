@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.university.mapper.ProvinceMapper">
+
+    <resultMap type="com.ruoyi.university.domain.Province" id="ProvinceResult">
+        <id property="provinceId" column="province_id"/>
+        <result property="provinceName" column="province_name"/>
+        <result property="numTotal" column="num_total"/>
+        <result property="num985" column="num_985"/>
+        <result property="num211" column="num_211"/>
+        <result property="minScoreLiberal" column="min_score_liberal"/>
+        <result property="minScoreScience" column="min_score_science"/>
+    </resultMap>
+
+    <!-- 获取所有省份的高校统计信息 -->
+    <select id="getAllProvinces" resultMap="ProvinceResult">
+        SELECT * FROM cers_province
+    </select>
+
+    <!-- 根据省份ID获取高校统计信息 -->
+    <select id="getProvinceById" parameterType="Long" resultMap="ProvinceResult">
+        SELECT * FROM cers_province WHERE province_id = #{provinceId}
+    </select>
+
+    <!-- 添加省份高校统计信息 -->
+    <insert id="addProvince" parameterType="com.ruoyi.university.domain.Province">
+        INSERT INTO cers_province (province_name,num_total, num_985, num_211, min_score_liberal, min_score_science)
+        VALUES (#{provinceName},#{numTotal}, #{num985}, #{num211}, #{minScoreLiberal}, #{minScoreScience})
+    </insert>
+
+    <!-- 更新省份高校统计信息 -->
+    <update id="updateProvince" parameterType="com.ruoyi.university.domain.Province">
+        UPDATE cers_province
+        SET province_name = #{provinceName},
+            num_total = #{numTotal},
+            num_985 = #{num985},
+            num_211 = #{num211},
+            min_score_liberal = #{minScoreLiberal},
+            min_score_science = #{minScoreScience}
+        WHERE province_id = #{provinceId}
+    </update>
+
+    <!-- 删除省份高校统计信息 -->
+    <delete id="deleteProvince" parameterType="Long">
+        DELETE FROM cers_province WHERE province_id = #{provinceId}
+    </delete>
+
+</mapper>
