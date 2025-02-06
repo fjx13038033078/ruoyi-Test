@@ -35,7 +35,7 @@
     />
 
     <!-- 添加/编辑省份对话框 -->
-    <el-dialog :visible.sync="dialogVisible" :title="dialogTitle" width="20%">
+    <el-dialog :visible.sync="dialogVisible" :title="dialogTitle" width="500px">
       <el-form :model="provinceForm" label-width="100px">
         <el-form-item label="省份名称">
           <el-select v-model="provinceForm.provinceName" placeholder="请选择省份" style="width:200px">
