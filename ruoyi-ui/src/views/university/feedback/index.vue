@@ -19,7 +19,7 @@
       <el-table-column label="状态" align="center">
         <template #default="scope">
           <el-tag :type="scope.row.status === 1 ? 'success' : 'warning'">
-            {{ scope.row.status === 1 ? '已解答' : '未解答' }}
+            {{ scope.row.status === 1 ? '已回复' : '未回复' }}
           </el-tag>
         </template>
       </el-table-column>
