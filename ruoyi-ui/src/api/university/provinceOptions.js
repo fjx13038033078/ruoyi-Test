@@ -30,6 +30,7 @@ const provinceOptions = [
   { label: "青海", value: "青海" },
   { label: "宁夏", value: "宁夏" },
   { label: "新疆", value: "新疆" },
+  { label: "内蒙古", value: "内蒙古" },
 ];
 
 export default provinceOptions;
