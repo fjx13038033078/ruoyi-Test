@@ -10,6 +10,7 @@ import {MapChart} from "echarts/charts";
 import {TitleComponent, TooltipComponent, VisualMapComponent} from "echarts/components";
 import {CanvasRenderer} from "echarts/renderers";
 import chinaMap from "@/assets/geo/china.json";
+import shanxiMap from "@/assets/geo/shanxi.json"
 import * as echarts from "echarts";
 import {listProvinces} from "@/api/university/province";
 
@@ -102,6 +103,54 @@ export default {
         ],
       };
       // 设置选项
+      this.chartInstance.setOption(option);
+
+      // 监听点击事件，切换到省份地图
+      this.chartInstance.on("click", (params) => {
+        if (params.name === "山西") {
+          this.showProvinceMap("山西", shanxiMap);
+        }
+      });
+    },
+    showProvinceMap(provinceName, provinceGeoJSON) {
+      echarts.registerMap(provinceName, provinceGeoJSON);
+
+      const option = {
+        title: {
+          text: `${provinceName}高校分布图`,
+          left: "center",
+        },
+        tooltip: {
+          trigger: "item",
+          formatter: (params) => {
+            const { name, data } = params;
+            return `${name}：${data?.value || "暂无数据"}`;
+          },
+        },
+        visualMap: {
+          min: 1,
+          max: 10,
+          left: "left",
+          top: "bottom",
+          text: ["高", "低"],
+          inRange: {
+            color: ["#e0f3f8", "#abd9e9", "#74add1", "#4575b4", "#313695"],
+          },
+          calculable: true,
+        },
+        series: [
+          {
+            name: `${provinceName}高校分布`,
+            type: "map",
+            map: provinceName,
+            emphasis: {
+              label: { show: true },
+            },
+            data: this.mapData.filter(item => item.name === provinceName),
+          },
+        ],
+      };
+
       this.chartInstance.setOption(option);
     },
   }

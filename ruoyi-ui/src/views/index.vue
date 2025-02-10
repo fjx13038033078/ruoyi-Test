@@ -171,7 +171,7 @@ export default {
               left: 'center',
               top: 'center',
               style: {
-                text: '高考志愿个性化推荐系统',
+                text: 'xxxxx系统',
                 fontSize: 80,
                 fontWeight: 'bold',
                 lineDash: [0, 200],
